@@ -31,9 +31,6 @@ typedef struct      s_philo
     char            *str_nb;
     int             nb_len;
     unsigned long   diying;
-    // int             eating;
-    // int             sleeping;
-    // int             thinking;
     int             time_must_eat;
     t_settings      *set;
 }                   t_philo;

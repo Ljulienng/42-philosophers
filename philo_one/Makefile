@@ -4,7 +4,7 @@ SRCS = 	./srcs/main.c 			\
 		./srcs/ft_isspace.c 	\
 		./srcs/ft_itoa.c		\
 		./srcs/ft_strlen.c		\
-		./srcs/ft_putstr.c
+		./srcs/ft_putstr.c 
 
 OBJS = $(SRCS:.c=.o)
 
@@ -12,7 +12,7 @@ NAME = philo_one
 RM = rm -f
 CC = gcc
 INCLUDES = ./includes/
-CFLAGS = -Wall  -pthread -g  -I $(INCLUDES) 
+CFLAGS = -Wall  -pthread -g  -fsanitize=address -g3 -I $(INCLUDES) 
 
 all: $(NAME)
 
