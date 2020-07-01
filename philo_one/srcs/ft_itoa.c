@@ -22,7 +22,7 @@ static char	*ft_itoa_bis(int count, int sign, int div, long nb)
 	return (s);
 }
 
-char		*ft_itoa(int n)
+char		*ft_itoa(long n)
 {
 	int		div;
 	int		count;
