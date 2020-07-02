@@ -1,10 +1,21 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/07/02 16:21:17 by pganglof          #+#    #+#              #
+#    Updated: 2020/07/02 18:44:37 by pganglof         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 SRCS = 	./srcs/main.c 			\
 		./srcs/ft_atoi.c 		\
-		./srcs/ft_isdigit.c 	\
-		./srcs/ft_isspace.c 	\
 		./srcs/ft_itoa.c		\
 		./srcs/ft_strlen.c		\
-		./srcs/ft_putstr.c 
+		./srcs/philosopher_day.c\
+		./srcs/print_message.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -12,7 +23,7 @@ NAME = philo_one
 RM = rm -f
 CC = gcc
 INCLUDES = ./includes/
-CFLAGS = -Wall  -pthread -g  -fsanitize=address -g3 -I $(INCLUDES) 
+CFLAGS = -Wall  -pthread -g   -I $(INCLUDES) 
 
 all: $(NAME)
 
