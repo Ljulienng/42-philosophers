@@ -49,10 +49,6 @@ typedef struct		s_settings
 typedef struct		s_philo
 {
 	pthread_t		tid_message;
-	int				right;
-	int				left;
-	char			*s_left;
-	int				s_left_len;
 	char			*nb;
 	char			*time;
 	int				state;
