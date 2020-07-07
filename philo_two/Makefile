@@ -14,16 +14,15 @@ SRCS = 	./srcs/main.c 			\
 		./srcs/ft_atoi.c 		\
 		./srcs/ft_itoa.c		\
 		./srcs/ft_strlen.c		\
-		./srcs/philosopher_day.c\
 		./srcs/print_message.c
 
 OBJS = $(SRCS:.c=.o)
 
-NAME = philo_one
+NAME = philo_two
 RM = rm -f
 CC = gcc
 INCLUDES = ./includes/
-CFLAGS = -Wall -Wextra -Werror  -pthread -g   -I $(INCLUDES) 
+CFLAGS = -Wall -Wextra -Werror -pthread -g -I $(INCLUDES) 
 
 all: $(NAME)
 

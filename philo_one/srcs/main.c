@@ -76,10 +76,11 @@ int		thread(t_settings *set)
 	{
 		memset(&philo[i], 0, sizeof(t_philo));
 		philo[i].right = i;
-		philo[i].left = (i - 1 == -1) ?
-		set->number_of_philosopher - 1 : (i - 1);
+		philo[i].left = (i + 1) % set->number_of_philosopher;
+		philo[i].s_left = ft_itoa(philo[i].left + 1);
+		philo[i].s_left_len = ft_strlen(philo[i].s_left);
 		philo[i].nb = ft_itoa(i + 1);
-		philo[i].nb_len = strlen(philo[i].nb);
+		philo[i].nb_len = ft_strlen(philo[i].nb);
 		philo[i].set = set;
 		i++;
 	}
@@ -87,6 +88,14 @@ int		thread(t_settings *set)
 		return (0);
 	if (set->died == 0)
 		write(1, "All philosophers finished to eat\n", 33);
+	i = 0;
+	while (i < set->number_of_philosopher)
+	{
+		free(philo[i].s_left);
+		free(philo[i++].nb);
+	}
+	free(set->tid);
+	free(philo);
 	return (1);
 }
 
@@ -130,6 +139,8 @@ int		main(int argc, char **argv)
 		return (1);
 	if (!(thread(&set)))
 		return (1);
+	free(set.lock);
+	free(set.fork);
 	i = 0;
 	while (i < set.number_of_philosopher)
 		pthread_mutex_destroy(&(set.lock[i++]));

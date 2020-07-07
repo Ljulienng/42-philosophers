@@ -15,9 +15,12 @@
 
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
+# include <fcntl.h> 
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
+# include <sys/stat.h>
 # include <sys/time.h>
 
 # define EAT 1
@@ -29,12 +32,11 @@
 typedef struct		s_settings
 {
 	pthread_t		*tid;
-	pthread_mutex_t	*lock;
-	pthread_mutex_t	message;
-	int				mes;
-	int				died;
+	sem_t	        *lock;
+	sem_t	        *message;
+	int				ret;
 	struct timeval	tv;
-	int				*fork;
+	int				died;
 	unsigned long	start_time;
 	int				number_of_philosopher;
 	unsigned int	time_to_die;
@@ -63,8 +65,6 @@ typedef struct		s_philo
 int					ft_atoi(const char *s);
 int					ft_strlen(const char *str);
 char				*ft_itoa(long n);
-int					philosopher_meal(t_philo *philo);
-int					philosopher_nap(t_philo *philo);
 unsigned long		get_time(void);
 int					print_message(t_philo *philo, int str);
 
