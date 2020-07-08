@@ -12,129 +12,148 @@ unsigned long	get_time(void)
 	return (ret);
 }
 
-void    *start(t_philo *philo)
+void            *died(void *arg)
 {
+    t_philo *philo;
+
+	philo = (t_philo*)arg;
+    while (philo->ret == 0)
+    {
+        if (get_time() - philo->diying > philo->set->time_to_die)
+        {
+            print_message(philo, DIED);
+            exit (1) ;
+        }
+    }
+    return NULL;
+}
+
+void             *eat(void *arg)
+{
+    t_philo *philo;
+
+	philo = (t_philo*)arg;
+
+    philo->ret = pthread_mutex_lock(&(philo->mutex_died));
+
+    sem_wait(philo->set->lock);
+    sem_wait(philo->set->lock);
+
+    philo->ret = 1;
+
+
+    if (!(print_message(philo, EAT)))
+    {
+        sem_post(philo->set->lock);
+        sem_post(philo->set->lock);
+        exit (0);
+    }
+    usleep(philo->set->time_to_eat * 1000);
+    philo->time_must_eat += 1;
+    sem_post(philo->set->lock);
+    sem_post(philo->set->lock);
+    pthread_mutex_unlock(&(philo->mutex_died));
+
+
+    if (philo->set->number_of_philosopher != -1 &&
+    philo->time_must_eat ==
+    philo->set->number_of_time_each_philosophers_must_eat)
+        exit (0);
+
+    if (!(print_message(philo, SLEEP)))
+    {
+        sem_post(philo->set->lock);
+        sem_post(philo->set->lock);
+        exit (0);
+    }
+    usleep(philo->set->time_to_sleep * 1000);
+    
+    if (!(print_message(philo, THINK)))
+    {
+        sem_post(philo->set->lock);
+        sem_post(philo->set->lock);
+        exit (0);
+    }
+    return NULL;
+}
+
+void             start(t_philo *philo)
+{
+    if (pthread_mutex_init(&(philo->mutex_died), NULL) != 0)
+        exit (0);
     while (1)
     {
         philo->diying = get_time();
-        while (philo->set->ret <= 1)
+
+        if (pthread_create(&(philo->tid_died), NULL, &died, philo) != 0)
         {
-            if (get_time() - philo->diying > philo->set->time_to_die)
+            write(1, "\nCan't create thread\n", 20);
+		    exit (0);
+        }
+        if (pthread_create(&(philo->tid_eat), NULL, &eat, philo) != 0)
+        {
+            write(1, "\nCan't create thread\n", 20);
+		    exit (0);
+        }
+    	pthread_join(philo->tid_died, NULL);
+    	pthread_join(philo->tid_eat, NULL);
+
+    }
+}
+
+int             start_process(t_settings *set, t_philo *philo)
+{
+    int     i;
+    int     status;
+    pid_t   pid;
+    pid_t   *all_child;
+
+    all_child = malloc(sizeof(pid_t) * set->number_of_philosopher);
+    i = 0;
+    (void)philo;
+    set->start_time = get_time();
+    while (i < set->number_of_philosopher)
+    {
+        pid = fork();
+        if (pid == 0)
+            start(&(philo[i]));
+        else if (pid > 0)
+            all_child[i] = pid;
+        else if (pid < 0)
+            printf("Could not fork\n");
+        i++;
+    }
+    while ((pid = waitpid(-1, &status, 0)))
+    {
+        if (pid == -1 && errno == ECHILD)
+            break ;
+        else if (pid == -1)
+            perror ("waitpid");
+        else if (WIFEXITED(status))
+        {
+            // printf("%d exited, status=%d\n", pid, WEXITSTATUS(status));
+            if (WEXITSTATUS(status) == 1)
             {
-                print_message(philo, DIED);
-                return NULL;
+                for (int j = 0; j < set->number_of_philosopher; j++)
+                    kill(all_child[j], SIGTERM);
+                exit (0);
             }
         }
-        sem_wait(philo->set->lock);
-        philo->set->ret -= 1;
-        sem_wait(philo->set->lock);
-        philo->set->ret -= 1;
-        if (!(print_message(philo, EAT)))
-        {
-            sem_post(philo->set->lock);
-                return NULL;
-        }
-        usleep(philo->set->time_to_eat * 1000);
-        philo->time_must_eat += 1;
-
-        sem_post(philo->set->lock);
-        philo->set->ret += 1;
-        sem_post(philo->set->lock);
-        philo->set->ret += 1;
-
-        if (philo->set->number_of_philosopher != -1 &&
-        philo->time_must_eat ==
-        philo->set->number_of_time_each_philosophers_must_eat)
-                return NULL;
-
-        if (!(print_message(philo, SLEEP)))
-        {
-            sem_post(philo->set->lock);
-                return NULL;
-        }
-        usleep(philo->set->time_to_sleep * 1000);
-        
-        if (!(print_message(philo, THINK)))
-        {
-            sem_post(philo->set->lock);
-                return NULL;
-        }
+        else if (WIFSIGNALED(status))
+            printf("%d killed by signal %d\n", pid, WTERMSIG(status));
+        else if (WIFSTOPPED(status))
+            printf("%d stopped by signal %d\n", pid, WSTOPSIG(status));
+        else if (WIFCONTINUED(status))
+            printf("%d continued\n", pid);
     }
+    return (1);
 }
 
-int		start_process(t_settings *set, t_philo *philo)
+int     init_philosophers(t_settings *set)
 {
-	int		i;
-    // int     *status;
-    // int     ret;
-    int     pid;
-	i = 0;
-    (void)philo;
-    // status = malloc(sizeof(int) * set->number_of_philosopher);
-    // while (i < set->number_of_philosopher)
-    //     set->pid[i++] = fork();
-    i = 0;
-	set->start_time = get_time();
-    printf("number_of_philosopher : %d\n", set->number_of_philosopher);
-    while (i < set->number_of_philosopher)
-    {
-        if ((pid = fork()) == 0)
-        {
-            
-            // printf("[son] pid %d from [parent] pid %d\n",getpid(),getppid()); 
-            start(&(philo[i]));
-            exit(0);
-        }
-    
-        i++;
-    }    
-    i = 0;
-    while (i < set->number_of_philosopher)
-    {
-        wait(NULL);
-        // waitpid(set->pid[i], &(status[i]), 0);
-        // ret = WEXITSTATUS(status[i]);
-
-        //             // printf("i : %d\n", i);
-        //     // printf("ret : %d\n", ret);
-        //     if (ret == 1)
-        //     {
-        //         int j = 0;
-        //             printf("j : %d\n", j);
-        //         while (j < set->number_of_philosopher)
-        //         {
-        //             printf("j : %d\n", j);
-        //             kill (set->pid[j++], 0);
-        //         }
-        //         exit (0);
-        //     }
-        i++;
-    }
-
-
-	return (1);
-}
-
-int		init_program(t_settings *set, int argc, char **argv)
-{
-	int		i;
+    int         i;
 	t_philo		*philo;
 
-	set->number_of_philosopher = ft_atoi(argv[1]);
-    set->ret = set->number_of_philosopher;
-	set->time_to_die = ft_atoi(argv[2]);
-	set->time_to_eat = ft_atoi(argv[3]);
-	set->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		set->number_of_time_each_philosophers_must_eat = ft_atoi(argv[5]);
-	else
-		set->number_of_time_each_philosophers_must_eat = -1;
-    sem_unlink("semaphore");
-    if (!(set->lock = sem_open("semaphore", O_CREAT, S_IRWXG, set->number_of_philosopher)))
-        return(1);
-    sem_unlink("message");
-    if (!(set->message = sem_open("message", O_CREAT, S_IRWXG, 1)))
-        return(1);
     i = 0;
 	if (!(philo = malloc(sizeof(t_philo) * set->number_of_philosopher)))
 		return (0);
@@ -156,9 +175,28 @@ int		init_program(t_settings *set, int argc, char **argv)
 		free(philo[i++].nb);
 	free(set->pid);
 	free(philo);
-	return (1);
+    return (1);
 }
 
+int		init_program(t_settings *set, int argc, char **argv)
+{
+	set->number_of_philosopher = ft_atoi(argv[1]);
+	set->time_to_die = ft_atoi(argv[2]);
+	set->time_to_eat = ft_atoi(argv[3]);
+	set->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		set->number_of_time_each_philosophers_must_eat = ft_atoi(argv[5]);
+	else
+		set->number_of_time_each_philosophers_must_eat = -1;
+    sem_unlink("semaphore");
+    sem_unlink("message");
+    if (!(set->lock = sem_open("semaphore", O_CREAT, S_IRWXG, set->number_of_philosopher)))
+        return (0);
+    if (!(set->message = sem_open("message", O_CREAT, S_IRWXG, 1)))
+        return (0);
+    init_philosophers(set);
+	return (1);
+}
 
 int		main(int argc, char **argv)
 {
@@ -167,10 +205,8 @@ int		main(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		return (1);
 	memset(&set, 0, sizeof(t_settings));
-
 	if (!(init_program(&set, argc, argv)))
 		return (1);
-
     sem_close(set.lock);
 	sem_close(set.message);
 	return (0);

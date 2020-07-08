@@ -14,13 +14,16 @@
 
 void			thread_print_two(t_philo *philo)
 {
-	write(1, philo->time, ft_strlen(philo->time));
+	int		time_len;
+
+	time_len = ft_strlen(philo->time);
+	write(1, philo->time, time_len);
 	write(1, " ms: ", 5);
 	write(1, philo->nb, philo->nb_len);
 	if (philo->state == EAT)
 	{
 		write(1, " has taken 2 forks\n", 19);
-		write(1, philo->time, ft_strlen(philo->time));
+		write(1, philo->time, time_len);
 		write(1, " ms: ", 5);
 		write(1, philo->nb, philo->nb_len);
 		write(1, " is eating\n", 11);

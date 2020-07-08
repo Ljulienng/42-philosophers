@@ -22,10 +22,11 @@
 # include <stdio.h>
 # include <sys/stat.h>
 # include <sys/time.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <signal.h>
+# include <errno.h>
 
 # define EAT 1
 # define SLEEP 2
@@ -38,7 +39,6 @@ typedef struct		s_settings
     pid_t           *pid;
 	sem_t	        *lock;
 	sem_t	        *message;
-	int				ret;
 	struct timeval	tv;
 	int				died;
 	unsigned long	start_time;
@@ -53,6 +53,10 @@ typedef struct		s_settings
 typedef struct		s_philo
 {
 	pthread_t		tid_message;
+	pthread_t		tid_died;
+	pthread_t		tid_eat;
+	pthread_mutex_t	mutex_died;
+	int				ret;
 	int				i;
 	char			*nb;
 	char			*time;
