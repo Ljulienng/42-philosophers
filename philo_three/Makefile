@@ -22,7 +22,7 @@ NAME = philo_three
 RM = rm -f
 CC = gcc
 INCLUDES = ./includes/
-CFLAGS = -Wall -Wextra -Werror -pthread -g -I $(INCLUDES) 
+CFLAGS = -Wall -Wextra -Werror -pthread -I $(INCLUDES) 
 
 all: $(NAME)
 

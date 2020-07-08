@@ -16,6 +16,11 @@ void			thread_print_two(t_philo *philo)
 {
 	int		time_len;
 
+    if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+	{
+		write(1, "\nMalloc error\n", 14);
+		return ;
+	}
 	time_len = ft_strlen(philo->time);
 	write(1, philo->time, time_len);
 	write(1, " ms: ", 5);
@@ -34,6 +39,7 @@ void			thread_print_two(t_philo *philo)
 		write(1, " is thinking\n", 13);
 	else
 		write(1, " died\n", 6);
+	free(philo->time);
 }
 
 static void		*thread_print(void *arg)
@@ -42,34 +48,20 @@ static void		*thread_print(void *arg)
 
 	philo = (t_philo*)arg;
 	sem_wait(philo->set->message);
-	if (philo->set->died == 1)
-		sem_post(philo->set->message);
-	else
-	{
-		if (philo->state == DIED)
-			philo->set->died = 1;
-		thread_print_two(philo);
-		sem_post(philo->set->message);
-	}
-	free(philo->time);
+	thread_print_two(philo);
+	sem_post(philo->set->message);
 	return (NULL);
 }
 
 int				print_message(t_philo *philo, int str)
 {
 	philo->state = str;
-    if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-	{
-		write(1, "\nMalloc error\n", 14);
-		return (0);
-	}
+
 	if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
 	{
 		write(1, "\nCan't create thread\n", 20);
 		return (0);
 	}
 	pthread_join(philo->tid_message, NULL);
-	if (philo->set->died == 1)
-		return (0);
 	return (1);
 }

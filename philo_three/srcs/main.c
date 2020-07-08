@@ -52,7 +52,6 @@ void             *eat(void *arg)
     philo->time_must_eat += 1;
     sem_post(philo->set->lock);
     sem_post(philo->set->lock);
-    pthread_mutex_unlock(&(philo->mutex_died));
 
 
     if (philo->set->number_of_philosopher != -1 &&
@@ -99,6 +98,7 @@ void             start(t_philo *philo)
     	pthread_join(philo->tid_eat, NULL);
 
     }
+        pthread_mutex_destroy(&(philo->mutex_died));
 }
 
 int             start_process(t_settings *set, t_philo *philo)
@@ -108,9 +108,9 @@ int             start_process(t_settings *set, t_philo *philo)
     pid_t   pid;
     pid_t   *all_child;
 
-    all_child = malloc(sizeof(pid_t) * set->number_of_philosopher);
+    if (!(all_child = malloc(sizeof(pid_t) * set->number_of_philosopher)))
+        return (0);
     i = 0;
-    (void)philo;
     set->start_time = get_time();
     while (i < set->number_of_philosopher)
     {
@@ -120,32 +120,25 @@ int             start_process(t_settings *set, t_philo *philo)
         else if (pid > 0)
             all_child[i] = pid;
         else if (pid < 0)
-            printf("Could not fork\n");
+            write(2, "\nCould not fork\n", 16);
         i++;
     }
     while ((pid = waitpid(-1, &status, 0)))
     {
-        if (pid == -1 && errno == ECHILD)
-            break ;
-        else if (pid == -1)
-            perror ("waitpid");
+        if (pid == -1)
+            write(2, "\nwaitpid\n", 8);
         else if (WIFEXITED(status))
         {
-            // printf("%d exited, status=%d\n", pid, WEXITSTATUS(status));
             if (WEXITSTATUS(status) == 1)
             {
                 for (int j = 0; j < set->number_of_philosopher; j++)
-                    kill(all_child[j], SIGTERM);
-                exit (0);
+                    kill(all_child[j], SIGKILL);
+                set->died = 1;
+                break ;
             }
         }
-        else if (WIFSIGNALED(status))
-            printf("%d killed by signal %d\n", pid, WTERMSIG(status));
-        else if (WIFSTOPPED(status))
-            printf("%d stopped by signal %d\n", pid, WSTOPSIG(status));
-        else if (WIFCONTINUED(status))
-            printf("%d continued\n", pid);
     }
+    free(all_child);
     return (1);
 }
 
@@ -157,8 +150,6 @@ int     init_philosophers(t_settings *set)
     i = 0;
 	if (!(philo = malloc(sizeof(t_philo) * set->number_of_philosopher)))
 		return (0);
-	if (!(set->pid = malloc(sizeof(pid_t) * set->number_of_philosopher)))
-		return (0);
 	while (i < set->number_of_philosopher)
 	{
 		memset(&philo[i], 0, sizeof(t_philo));
@@ -168,12 +159,11 @@ int     init_philosophers(t_settings *set)
 	}
     if (!(start_process(set, philo)))
 		return (0);
-	if (set->died == 0)
-		write(1, "All philosophers finished to eat\n", 33);
+    if (set->died == 0)
+	    write(1, "All philosophers finished to eat\n", 33);
 	i = 0;
 	while (i < set->number_of_philosopher)
 		free(philo[i++].nb);
-	free(set->pid);
 	free(philo);
     return (1);
 }
@@ -188,11 +178,11 @@ int		init_program(t_settings *set, int argc, char **argv)
 		set->number_of_time_each_philosophers_must_eat = ft_atoi(argv[5]);
 	else
 		set->number_of_time_each_philosophers_must_eat = -1;
-    sem_unlink("semaphore");
-    sem_unlink("message");
-    if (!(set->lock = sem_open("semaphore", O_CREAT, S_IRWXG, set->number_of_philosopher)))
+    sem_unlink("/semaphore");
+    sem_unlink("/message");
+    if (!(set->lock = sem_open("/semaphore", O_CREAT, S_IRWXG, set->number_of_philosopher)))
         return (0);
-    if (!(set->message = sem_open("message", O_CREAT, S_IRWXG, 1)))
+    if (!(set->message = sem_open("/message", O_CREAT, S_IRWXG, 1)))
         return (0);
     init_philosophers(set);
 	return (1);

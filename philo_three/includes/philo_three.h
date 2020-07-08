@@ -34,9 +34,11 @@
 # define FORK 4
 # define DIED 5
 
+# define SEMAPHORE "semaphore"
+# define MESSAGE "message"
+
 typedef struct		s_settings
 {
-    pid_t           *pid;
 	sem_t	        *lock;
 	sem_t	        *message;
 	struct timeval	tv;
