@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:25 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/02 18:44:33 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:45:40 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE
-# define PHILO_ONE
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <stdlib.h>
 # include <pthread.h>
 # include <semaphore.h>
-# include <fcntl.h> 
+# include <fcntl.h>
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
@@ -32,8 +32,8 @@
 typedef struct		s_settings
 {
 	pthread_t		*tid;
-	sem_t	        *lock;
-	sem_t	        *message;
+	sem_t			*lock;
+	sem_t			*message;
 	int				ret;
 	struct timeval	tv;
 	int				died;
@@ -63,5 +63,6 @@ int					ft_strlen(const char *str);
 char				*ft_itoa(long n);
 unsigned long		get_time(void);
 int					print_message(t_philo *philo, int str);
+void				*start(void *arg);
 
 #endif

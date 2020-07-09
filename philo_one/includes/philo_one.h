@@ -6,12 +6,12 @@
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:25 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/02 18:44:33 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:46:29 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE
-# define PHILO_ONE
+#ifndef PHILO_ONE_H
+# define PHILO_ONE_H
 
 # include <stdlib.h>
 # include <pthread.h>

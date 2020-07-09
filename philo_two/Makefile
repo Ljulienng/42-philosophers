@@ -6,7 +6,7 @@
 #    By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/02 16:21:17 by pganglof          #+#    #+#              #
-#    Updated: 2020/07/02 18:44:37 by pganglof         ###   ########.fr        #
+#    Updated: 2020/07/09 20:44:37 by pganglof         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ SRCS = 	./srcs/main.c 			\
 		./srcs/ft_atoi.c 		\
 		./srcs/ft_itoa.c		\
 		./srcs/ft_strlen.c		\
-		./srcs/print_message.c
+		./srcs/print_message.c	\
+		./srcs/philosopher_day.c
 
 OBJS = $(SRCS:.c=.o)
 

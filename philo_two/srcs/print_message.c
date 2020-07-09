@@ -6,7 +6,7 @@
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 18:30:29 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/02 18:41:47 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:23:53 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void		*thread_print(void *arg)
 int				print_message(t_philo *philo, int str)
 {
 	philo->state = str;
-    if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
 	{
 		write(1, "\nMalloc error\n", 14);
 		return (0);

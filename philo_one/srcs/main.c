@@ -6,7 +6,7 @@
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:15 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/02 18:47:23 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:49:45 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ int		start_thread(t_settings *set, t_philo *philo)
 		pthread_join(set->tid[i], NULL);
 		i++;
 	}
+	if (set->died == 0)
+		write(1, "All philosophers finished to eat\n", 33);
+	i = 0;
+	while (i < set->number_of_philosopher)
+		free(philo[i++].nb);
 	return (1);
 }
 
@@ -68,9 +73,8 @@ int		thread(t_settings *set)
 	t_philo		*philo;
 
 	i = 0;
-	if (!(philo = malloc(sizeof(t_philo) * set->number_of_philosopher)))
-		return (0);
-	if (!(set->tid = malloc(sizeof(pthread_t) * set->number_of_philosopher)))
+	if (!(philo = malloc(sizeof(t_philo) * set->number_of_philosopher))
+		|| !(set->tid = malloc(sizeof(pthread_t) * set->number_of_philosopher)))
 		return (0);
 	while (i < set->number_of_philosopher)
 	{
@@ -81,20 +85,13 @@ int		thread(t_settings *set)
 		philo[i].s_left_len = ft_strlen(philo[i].s_left);
 		philo[i].nb = ft_itoa(i + 1);
 		philo[i].nb_len = ft_strlen(philo[i].nb);
-		philo[i].set = set;
-		i++;
+		philo[i++].set = set;
 	}
 	if (!(start_thread(set, philo)))
 		return (0);
-	if (set->died == 0)
-		write(1, "All philosophers finished to eat\n", 33);
 	i = 0;
 	while (i < set->number_of_philosopher)
-	{
-		free(philo[i].s_left);
-		free(philo[i++].nb);
-	}
-	free(set->tid);
+		free(philo[i++].s_left);
 	free(philo);
 	return (1);
 }
@@ -139,6 +136,7 @@ int		main(int argc, char **argv)
 		return (1);
 	if (!(thread(&set)))
 		return (1);
+	free(set.tid);
 	free(set.lock);
 	free(set.fork);
 	i = 0;
