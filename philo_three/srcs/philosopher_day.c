@@ -6,7 +6,7 @@
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:03:22 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/09 20:06:45 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/07/09 21:05:08 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ void			*eat(void *arg)
 	philo->ret = pthread_mutex_lock(&(philo->mutex_died));
 	sem_wait(philo->set->lock);
 	sem_wait(philo->set->lock);
+	philo->ret = 1;
 	print_message(philo, EAT);
 	usleep(philo->set->time_to_eat * 1000);
 	philo->time_must_eat += 1;
 	sem_post(philo->set->lock);
 	sem_post(philo->set->lock);
 	pthread_mutex_unlock(&(philo->mutex_died));
-	philo->ret = 1;
 	if (philo->set->number_of_philosopher != -1 &&
 	philo->time_must_eat ==
 	philo->set->number_of_time_each_philosophers_must_eat)
