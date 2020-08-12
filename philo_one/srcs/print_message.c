@@ -14,7 +14,10 @@
 
 void			thread_print_two(t_philo *philo)
 {
-	write(1, philo->time, ft_strlen(philo->time));
+	unsigned long nbtime;
+
+	nbtime = ft_strlen(philo->time);
+	write(1, philo->time, nbtime);
 	write(1, " ms: ", 5);
 	write(1, philo->nb, philo->nb_len);
 	if (philo->state == EAT)
@@ -24,7 +27,7 @@ void			thread_print_two(t_philo *philo)
 		write(1, " and ", 5);
 		write(1, philo->s_left, philo->s_left_len);
 		write(1, "\n", 1);
-		write(1, philo->time, ft_strlen(philo->time));
+		write(1, philo->time, nbtime);
 		write(1, " ms: ", 5);
 		write(1, philo->nb, philo->nb_len);
 		write(1, " is eating\n", 11);
