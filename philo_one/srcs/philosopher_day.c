@@ -26,9 +26,6 @@ unsigned long	get_time(void)
 
 int				philosopher_nap(t_philo *philo)
 {
-	unsigned long time;
-	
-	time = get_time();
 	if (!(print_message(philo, SLEEP)))
 		return (0);
 	usleep(philo->set->time_to_sleep * 1000);
@@ -47,9 +44,6 @@ int				kill_program(t_philo *philo)
 
 int				philosopher_meal(t_philo *philo)
 {
-	unsigned long time;
-	
-	time = get_time();
 	philo->set->fork[philo->right] =
 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	philo->set->fork[philo->left] =
