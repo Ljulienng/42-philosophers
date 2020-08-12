@@ -26,12 +26,14 @@ unsigned long	get_time(void)
 
 int				philosopher_nap(t_philo *philo)
 {
-	philo->time = ft_itoa(get_time() - philo->set->start_time);
+	unsigned long time;
+	
+	time = get_time();
 	if (!(print_message(philo, SLEEP)))
 		return (0);
-	usleep(philo->set->start_time +
-	(philo->set->time_to_sleep * 1000) - get_time());
-	philo->time = ft_itoa(get_time() - philo->set->start_time);
+	while (1)
+		if (get_time() > time + philo->set->time_to_sleep)
+			break ;
 	if (!(print_message(philo, THINK)))
 		return (0);
 	return (1);
@@ -46,15 +48,18 @@ int				kill_program(t_philo *philo)
 
 int				philosopher_meal(t_philo *philo)
 {
+	unsigned long time;
+	
+	time = get_time();
 	philo->set->fork[philo->right] =
 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	philo->set->fork[philo->left] =
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
-	philo->time = ft_itoa(get_time() - philo->set->start_time);
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
-	usleep(philo->set->start_time +
-	(philo->set->time_to_eat * 1000) - get_time());
+	while (1)
+		if (get_time() > time + philo->set->time_to_eat)
+			break ;
 	philo->time_must_eat += 1;
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));

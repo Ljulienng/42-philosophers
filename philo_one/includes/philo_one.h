@@ -67,5 +67,5 @@ int					philosopher_meal(t_philo *philo);
 int					philosopher_nap(t_philo *philo);
 unsigned long		get_time(void);
 int					print_message(t_philo *philo, int str);
-
+int					kill_program(t_philo *philo);
 #endif
