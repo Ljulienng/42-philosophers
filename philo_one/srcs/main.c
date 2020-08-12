@@ -14,7 +14,8 @@
 
 void	*start(void *arg)
 {
-	t_philo	*philo;
+	t_philo			*philo;
+	unsigned long 	time;
 
 	philo = (t_philo*)arg;
 	while (1)
@@ -23,9 +24,10 @@ void	*start(void *arg)
 		while (philo->set->fork[philo->right] == 0
 		|| philo->set->fork[philo->left] == 0)
 		{
-			if (get_time() - philo->diying > philo->set->time_to_die)
+			time = get_time();
+			if (time - philo->diying > philo->set->time_to_die)
 			{
-				philo->time = ft_itoa(get_time() - philo->set->start_time);
+				philo->time = ft_itoa(time - philo->set->start_time);
 				print_message(philo, DIED);
 				break ;
 			}
