@@ -29,7 +29,6 @@ int				philosopher_nap(t_philo *philo)
 	if (!(print_message(philo, SLEEP)))
 		return (0);
 	usleep(philo->set->time_to_sleep * 1000);
-	philo->time = ft_itoa(get_time() - philo->set->start_time);
 	if (!(print_message(philo, THINK)))
 		return (0);
 	return (1);
