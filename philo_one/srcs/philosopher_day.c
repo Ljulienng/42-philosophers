@@ -50,9 +50,6 @@ int				philosopher_meal(t_philo *philo)
 	philo->set->fork[philo->left] =
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	philo->time = ft_itoa(get_time() - philo->set->start_time);
-	if (!(print_message(philo, FORK)))
-		return (kill_program(philo));
-	philo->time = ft_itoa(get_time() - philo->set->start_time);
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
 	usleep(philo->set->time_to_eat * 1000);

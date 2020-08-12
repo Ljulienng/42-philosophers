@@ -18,19 +18,18 @@ void			thread_print_two(t_philo *philo)
 	write(1, " ms: ", 5);
 	write(1, philo->nb, philo->nb_len);
 	if (philo->state == EAT)
-		write(1, " is eating\n", 11);
-	else if (philo->state == SLEEP)
-		write(1, " is sleeping\n", 13);
-	else if (philo->state == THINK)
-		write(1, " is thinking\n", 13);
-	else if (philo->state == FORK)
 	{
 		write(1, " has taken forks ", 17);
 		write(1, philo->nb, philo->nb_len);
 		write(1, " and ", 5);
 		write(1, philo->s_left, philo->s_left_len);
 		write(1, "\n", 1);
+		write(1, " is eating\n", 11);
 	}
+	else if (philo->state == SLEEP)
+		write(1, " is sleeping\n", 13);
+	else if (philo->state == THINK)
+		write(1, " is thinking\n", 13);
 	else
 		write(1, " died\n", 6);
 }
