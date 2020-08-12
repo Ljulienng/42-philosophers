@@ -31,9 +31,8 @@ int				philosopher_nap(t_philo *philo)
 	time = get_time();
 	if (!(print_message(philo, SLEEP)))
 		return (0);
-	while (1)
-		if (get_time() > time + philo->set->time_to_sleep)
-			break ;
+	usleep(philo->set->time_to_sleep * 1000);
+	philo->time = ft_itoa(get_time() - philo->set->start_time);
 	if (!(print_message(philo, THINK)))
 		return (0);
 	return (1);
@@ -57,9 +56,7 @@ int				philosopher_meal(t_philo *philo)
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
-	while (1)
-		if (get_time() > time + philo->set->time_to_eat)
-			break ;
+	usleep(philo->set->time_to_sleep * 1000);
 	philo->time_must_eat += 1;
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
