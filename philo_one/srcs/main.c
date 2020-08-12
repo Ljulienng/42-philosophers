@@ -15,7 +15,7 @@
 void	*start(void *arg)
 {
 	t_philo			*philo;
-	unsigned long 	time;
+	unsigned long	time;
 
 	philo = (t_philo*)arg;
 	while (1)

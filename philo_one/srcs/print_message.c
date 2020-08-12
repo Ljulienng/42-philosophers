@@ -39,7 +39,7 @@ void			thread_print_two(t_philo *philo, unsigned long nbtime)
 
 static void		*thread_print(void *arg)
 {
-	t_philo 		*philo;
+	t_philo			*philo;
 	unsigned long	nbtime;
 
 	philo = (t_philo*)arg;
