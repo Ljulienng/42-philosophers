@@ -18,9 +18,9 @@ void	*start(void *arg)
 	unsigned long	time;
 
 	philo = (t_philo*)arg;
+	philo->diying = get_time();
 	while (1)
 	{
-		philo->diying = get_time();
 		while (philo->set->fork[philo->right] == 0
 		|| philo->set->fork[philo->left] == 0)
 		{

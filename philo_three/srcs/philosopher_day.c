@@ -50,6 +50,7 @@ void			*eat(void *arg)
 	sem_wait(philo->set->lock);
 	philo->ret = 1;
 	print_message(philo, EAT);
+	philo->diying = get_time();
 	usleep(philo->set->time_to_eat * 1000);
 	philo->time_must_eat += 1;
 	sem_post(philo->set->lock);
@@ -69,9 +70,9 @@ void			start(t_philo *philo)
 {
 	if (pthread_mutex_init(&(philo->mutex_died), NULL) != 0)
 		exit(0);
+	philo->diying = get_time();
 	while (1)
 	{
-		philo->diying = get_time();
 		if (pthread_create(&(philo->tid_died), NULL, &died, philo) != 0
 			|| pthread_create(&(philo->tid_eat), NULL, &eat, philo) != 0)
 		{

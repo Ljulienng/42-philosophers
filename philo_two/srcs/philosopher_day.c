@@ -52,9 +52,9 @@ void			*start(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo*)arg;
+	philo->diying = get_time();
 	while (1)
 	{
-		philo->diying = get_time();
 		if (!(died(philo)))
 			return (NULL);
 		sem_wait(philo->set->lock);
@@ -62,6 +62,7 @@ void			*start(void *arg)
 		philo->set->ret -= 2;
 		if (!(print_message(philo, EAT)))
 			return (NULL);
+		philo->diying = get_time();
 		usleep(philo->set->time_to_eat * 1000);
 		philo->time_must_eat += 1;
 		sem_post(philo->set->lock);
