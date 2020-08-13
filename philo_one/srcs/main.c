@@ -48,7 +48,7 @@ void	*start(void *arg)
 		pthread_create(&(philo->tid_eat), NULL, &thread_eat, philo);
 		while (philo->eating == 0)
 		{
-			pthread_detach(philo->tid_eat);
+			// pthread_detach(philo->tid_eat);
 			now = get_time();
 			if (now - philo->diying > philo->set->time_to_die)
 			{
