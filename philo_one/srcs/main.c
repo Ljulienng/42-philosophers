@@ -65,8 +65,8 @@ void	*start(void *arg)
 			now = get_time();
 			if (now - philo->diying > philo->set->time_to_die)
 			{
-				printf("now: %ld\ndying: %ld\ntime_to_die: %u\n", now, philo->diying, philo->set->time_to_die);
-				printf("now - dying = %ld\n", now - philo->diying);
+				// printf("now: %ld\ndying: %ld\ntime_to_die: %u\n", now, philo->diying, philo->set->time_to_die);
+				// printf("now - dying = %ld\n", now - philo->diying);
 				philo->time = ft_itoa(now - philo->set->start_time);
 				print_message(philo, DIED);
 				break ;
@@ -99,6 +99,12 @@ int		start_thread(t_settings *set, t_philo *philo)
 		// i++;
 		i+= 2;
 	}
+		i = 0;
+	while (i < set->number_of_philosopher)
+	{
+		pthread_join(set->tid[i], NULL);
+		i+=2;
+	}
 	i = 1;
 	while (i < set->number_of_philosopher)
 	{
@@ -113,11 +119,11 @@ int		start_thread(t_settings *set, t_philo *philo)
 		// i++;
 		i+= 2;
 	}	
-	i = 0;
+	i = 1;
 	while (i < set->number_of_philosopher)
 	{
 		pthread_join(set->tid[i], NULL);
-		i++;
+		i+=2;
 	}
 	if (set->died == 0)
 		write(1, "All philosophers finished to eat\n", 33);
