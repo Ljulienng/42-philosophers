@@ -29,19 +29,6 @@ void	*thread_eat(void *arg)
 	t_philo *philo;
 
 	philo = (t_philo*)arg;
-	// while (1)
-	// {
-		// if (philo->set->fork[philo->right] && philo->set->fork[philo->left])
-		// {
-			// philo->set->fork[philo->right] = pthread_mutex_lock(&(philo->set->lock[philo->right]));
-			// philo->set->fork[philo->left] = pthread_mutex_lock(&(philo->set->lock[philo->left]));
-			// break;
-		// }
-	// 	if (philo->set->fork[philo->right])
-	// 		pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	// 	if (philo->set->fork[philo->left])
-	// 		pthread_mutex_lock(&(philo->set->lock[philo->left]));
-	// }
 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	philo->eating = 1;
@@ -56,7 +43,7 @@ void	*start(void *arg)
 
 	philo = (t_philo*)arg;
 	philo->diying = get_time();
-	while (1)
+	while (philo->set->died == 0)
 	{
 		pthread_create(&(philo->tid_eat), NULL, &thread_eat, philo);
 		while (philo->eating == 0)
@@ -67,9 +54,9 @@ void	*start(void *arg)
 			{
 				// printf("now: %ld\ndying: %ld\ntime_to_die: %u\n", now, philo->diying, philo->set->time_to_die);
 				// printf("now - dying = %ld\n", now - philo->diying);
-				philo->time = ft_itoa(now - philo->set->start_time);
+				// philo->time = ft_itoa(now - philo->set->start_time);
 				print_message(philo, DIED);
-				break ;
+				return (NULL);
 			}
 		}
 		if (!(philosopher_meal(philo)))
@@ -93,18 +80,8 @@ int		start_thread(t_settings *set, t_philo *philo)
 			write(1, "\nCan't create thread\n", 20);
 			return (0);
 		}
-		// pthread_join(set->tid[i], NULL);
-		
-		// pthread_detach(set->tid[i]);
-		// i++;
-		i+= 2;
+		i += 2;
 	}
-	// 	i = 0;
-	// while (i < set->number_of_philosopher)
-	// {
-	// 	pthread_join(set->tid[i], NULL);
-	// 	i+=2;
-	// }
 	i = 1;
 	while (i < set->number_of_philosopher)
 	{
@@ -113,18 +90,8 @@ int		start_thread(t_settings *set, t_philo *philo)
 			write(1, "\nCan't create thread\n", 20);
 			return (0);
 		}
-		// pthread_join(set->tid[i], NULL);
-		
-		// pthread_detach(set->tid[i]);
-		// i++;
-		i+= 2;
+		i += 2;
 	}	
-	// i = 1;
-	// while (i < set->number_of_philosopher)
-	// {
-	// 	pthread_join(set->tid[i], NULL);
-	// 	i +=2;
-	// }
 	i = 0;
 	while (i < set->number_of_philosopher)
 	{
