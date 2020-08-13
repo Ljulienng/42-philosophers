@@ -43,19 +43,19 @@ int				kill_program(t_philo *philo)
 
 int				philosopher_meal(t_philo *philo)
 {
-	philo->set->fork[philo->right] =
-	pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	philo->set->fork[philo->left] =
-	pthread_mutex_lock(&(philo->set->lock[philo->left]));
-	if (!(print_message(philo, EAT)))
-		return (kill_program(philo));
+	// philo->set->fork[philo->right] =
+	// pthread_mutex_lock(&(philo->set->lock[philo->right]));
+	// philo->set->fork[philo->left] =
+	// pthread_mutex_lock(&(philo->set->lock[philo->left]));
+	// if (!(print_message(philo, EAT)))
+	// 	return (kill_program(philo));
 	philo->diying = get_time();
 	usleep(philo->set->time_to_eat * 1000);
 	philo->time_must_eat += 1;
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
-	philo->set->fork[philo->right] = 1;
-	philo->set->fork[philo->left] = 1;
+	// philo->set->fork[philo->right] = 1;
+	// philo->set->fork[philo->left] = 1;
 	if (philo->set->number_of_philosopher != -1 &&
 	philo->time_must_eat ==
 	philo->set->number_of_time_each_philosophers_must_eat)
