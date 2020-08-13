@@ -96,8 +96,23 @@ int		start_thread(t_settings *set, t_philo *philo)
 		// pthread_join(set->tid[i], NULL);
 		
 		// pthread_detach(set->tid[i]);
-		i++;
+		// i++;
+		i+= 2;
 	}
+	i = 1;
+	while (i < set->number_of_philosopher)
+	{
+		if (pthread_create(&(set->tid[i]), NULL, &start, &(philo[i])) != 0)
+		{
+			write(1, "\nCan't create thread\n", 20);
+			return (0);
+		}
+		// pthread_join(set->tid[i], NULL);
+		
+		// pthread_detach(set->tid[i]);
+		// i++;
+		i+= 2;
+	}	
 	i = 0;
 	while (i < set->number_of_philosopher)
 	{
