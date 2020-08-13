@@ -43,15 +43,9 @@ static void		*thread_print(void *arg)
 	unsigned long	nbtime;
 
 	philo = (t_philo*)arg;
-<<<<<<< HEAD
 	// if (!philo->time)
 	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
 		return (NULL);
-=======
-	if (!philo->time)
-		if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-			return (NULL);
->>>>>>> eb608eadcdf8da288b26c87f0c4de41599f3aa3a
 	nbtime = ft_strlen(philo->time);
 	pthread_mutex_lock(&(philo->set->message));
 	if (philo->set->died == 1)
