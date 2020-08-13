@@ -69,7 +69,7 @@ int				print_message(t_philo *philo, int str)
 		write(1, "\nCan't create thread\n", 20);
 		return (0);
 	}
-	pthread_detach(philo->tid_message);
+	// pthread_detach(philo->tid_message);
 	// pthread_join(philo->tid_message, NULL);
 	if (philo->set->died == 1)
 		return (0);
