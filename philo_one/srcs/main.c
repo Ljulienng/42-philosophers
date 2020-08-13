@@ -12,17 +12,17 @@
 
 #include "philo_one.h"
 
-void	*wait_eat(void *arg)
-{
-	t_philo		*philo;
+// void	*wait_eat(void *arg)
+// {
+// 	t_philo		*philo;
 
-	philo = (t_philo*)arg;
-	pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	pthread_mutex_lock(&(philo->set->lock[philo->left]));
-	philo->eating = 1;
-	print_message(philo, EAT);
-	return (NULL);
-}
+// 	philo = (t_philo*)arg;
+// 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
+// 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
+// 	philo->eating = 1;
+// 	print_message(philo, EAT);
+// 	return (NULL);
+// }
 
 void	*thread_eat(void *arg)
 {
@@ -37,6 +37,10 @@ void	*thread_eat(void *arg)
 			pthread_mutex_lock(&(philo->set->lock[philo->left]));
 			break;
 		}
+	// 	if (philo->set->fork[philo->right])
+	// 		pthread_mutex_lock(&(philo->set->lock[philo->right]));
+	// 	if (philo->set->fork[philo->left])
+	// 		pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	}
 	// pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	// pthread_mutex_lock(&(philo->set->lock[philo->left]));
@@ -89,6 +93,9 @@ int		start_thread(t_settings *set, t_philo *philo)
 			write(1, "\nCan't create thread\n", 20);
 			return (0);
 		}
+		// pthread_join(set->tid[i], NULL);
+		
+		// pthread_detach(set->tid[i]);
 		i++;
 	}
 	i = 0;
