@@ -55,9 +55,8 @@ int				philosopher_meal(t_philo *philo)
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
-	philo->time_must_eat += 1;
+	unsigned long end = get_time() + (philo->set->time_to_eat);
 	philo->diying = get_time();
-	unsigned long end = get_time() + (philo->set->time_to_sleep);
 	while (1)
 	{
 		if (get_time() > end)
@@ -66,6 +65,7 @@ int				philosopher_meal(t_philo *philo)
 	// usleep(philo->set->time_to_eat * 1000);
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
+	philo->time_must_eat += 1;
 	philo->set->fork[philo->right] = 1;
 	philo->set->fork[philo->left] = 1;
 	if (philo->set->number_of_philosopher != -1 &&
