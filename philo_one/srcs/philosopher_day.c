@@ -28,7 +28,13 @@ int				philosopher_nap(t_philo *philo)
 {
 	if (!(print_message(philo, SLEEP)))
 		return (0);
-	usleep(philo->set->time_to_sleep * 1000);
+	unsigned long end = get_time() + (philo->set->time_to_sleep);
+	while (1)
+	{
+		if (get_time() > end)
+			break ;
+	}
+	// usleep(philo->set->time_to_sleep * 1000);
 	if (!(print_message(philo, THINK)))
 		return (0);
 	return (1);
@@ -49,9 +55,15 @@ int				philosopher_meal(t_philo *philo)
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
-	philo->diying = get_time();
-	usleep(philo->set->time_to_eat * 1000);
 	philo->time_must_eat += 1;
+	philo->diying = get_time();
+	unsigned long end = get_time() + (philo->set->time_to_sleep);
+	while (1)
+	{
+		if (get_time() > end)
+			break ;
+	}
+	// usleep(philo->set->time_to_eat * 1000);
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
 	philo->set->fork[philo->right] = 1;
