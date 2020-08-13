@@ -45,7 +45,7 @@ void	*thread_eat(void *arg)
 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	philo->eating = 1;
-	print_message(philo, EAT);
+	// print_message(philo, EAT);
 	return (NULL);
 }
 
@@ -99,12 +99,12 @@ int		start_thread(t_settings *set, t_philo *philo)
 		// i++;
 		i+= 2;
 	}
-		i = 0;
-	while (i < set->number_of_philosopher)
-	{
-		pthread_join(set->tid[i], NULL);
-		i+=2;
-	}
+	// 	i = 0;
+	// while (i < set->number_of_philosopher)
+	// {
+	// 	pthread_join(set->tid[i], NULL);
+	// 	i+=2;
+	// }
 	i = 1;
 	while (i < set->number_of_philosopher)
 	{
@@ -119,11 +119,17 @@ int		start_thread(t_settings *set, t_philo *philo)
 		// i++;
 		i+= 2;
 	}	
-	i = 1;
+	// i = 1;
+	// while (i < set->number_of_philosopher)
+	// {
+	// 	pthread_join(set->tid[i], NULL);
+	// 	i +=2;
+	// }
+	i = 0;
 	while (i < set->number_of_philosopher)
 	{
 		pthread_join(set->tid[i], NULL);
-		i+=2;
+		i++;
 	}
 	if (set->died == 0)
 		write(1, "All philosophers finished to eat\n", 33);
