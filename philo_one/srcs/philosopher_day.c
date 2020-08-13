@@ -69,8 +69,8 @@ int				philosopher_meal(t_philo *philo)
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
 	philo->eating = 0;
-	// philo->set->fork[philo->right] = 1;
-	// philo->set->fork[philo->left] = 1;
+	philo->set->fork[philo->right] = 1;
+	philo->set->fork[philo->left] = 1;
 	philo->time_must_eat += 1;
 	if (philo->set->number_of_philosopher != -1 &&
 	philo->time_must_eat ==

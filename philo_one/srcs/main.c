@@ -29,11 +29,14 @@ void	*thread_eat(void *arg)
 	t_philo *philo;
 
 	philo = (t_philo*)arg;
-	while (pthread_mutex_lock(&(philo->set->lock[philo->right]))
-	|| pthread_mutex_lock(&(philo->set->lock[philo->left])))
+	while (1)
 	{
-		pthread_mutex_unlock(&(philo->set->lock[philo->right]));
-		pthread_mutex_unlock(&(philo->set->lock[philo->left]));
+		if (philo->set->fork[philo->right] && philo->set->fork[philo->left])
+		{
+			pthread_mutex_lock(&(philo->set->lock[philo->right]));
+			pthread_mutex_lock(&(philo->set->lock[philo->left]));
+			break;
+		}
 	}
 	// pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	// pthread_mutex_lock(&(philo->set->lock[philo->left]));
@@ -120,7 +123,10 @@ int		thread(t_settings *set)
 		philo[i].s_left_len = ft_strlen(philo[i].s_left);
 		philo[i].nb = ft_itoa(i + 1);
 		philo[i].nb_len = ft_strlen(philo[i].nb);
-		philo[i++].set = set;
+		philo[i].set = set;
+		philo[i].set->fork[philo[i].right] = 1;
+		philo[i].set->fork[philo[i].left] = 1;
+		i++;
 	}
 	if (!(start_thread(set, philo)))
 		return (0);
