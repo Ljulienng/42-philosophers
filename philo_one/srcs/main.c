@@ -29,21 +29,21 @@ void	*thread_eat(void *arg)
 	t_philo *philo;
 
 	philo = (t_philo*)arg;
-	while (1)
-	{
-		if (philo->set->fork[philo->right] && philo->set->fork[philo->left])
-		{
-			pthread_mutex_lock(&(philo->set->lock[philo->right]));
-			pthread_mutex_lock(&(philo->set->lock[philo->left]));
-			break;
-		}
+	// while (1)
+	// {
+		// if (philo->set->fork[philo->right] && philo->set->fork[philo->left])
+		// {
+			// philo->set->fork[philo->right] = pthread_mutex_lock(&(philo->set->lock[philo->right]));
+			// philo->set->fork[philo->left] = pthread_mutex_lock(&(philo->set->lock[philo->left]));
+			// break;
+		// }
 	// 	if (philo->set->fork[philo->right])
 	// 		pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	// 	if (philo->set->fork[philo->left])
 	// 		pthread_mutex_lock(&(philo->set->lock[philo->left]));
-	}
-	// pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	// pthread_mutex_lock(&(philo->set->lock[philo->left]));
+	// }
+	pthread_mutex_lock(&(philo->set->lock[philo->right]));
+	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	philo->eating = 1;
 	print_message(philo, EAT);
 	return (NULL);
