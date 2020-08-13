@@ -12,18 +12,6 @@
 
 #include "philo_one.h"
 
-// void	*wait_eat(void *arg)
-// {
-// 	t_philo		*philo;
-
-// 	philo = (t_philo*)arg;
-// 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
-// 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
-// 	philo->eating = 1;
-// 	print_message(philo, EAT);
-// 	return (NULL);
-// }
-
 void	*thread_eat(void *arg)
 {
 	t_philo *philo;
@@ -32,7 +20,6 @@ void	*thread_eat(void *arg)
 	pthread_mutex_lock(&(philo->set->lock[philo->right]));
 	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	philo->eating = 1;
-	// print_message(philo, EAT);
 	return (NULL);
 }
 
@@ -48,13 +35,9 @@ void	*start(void *arg)
 		pthread_create(&(philo->tid_eat), NULL, &thread_eat, philo);
 		while (philo->eating == 0)
 		{
-			// pthread_detach(philo->tid_eat);
 			now = get_time();
 			if (now - philo->diying > philo->set->time_to_die)
 			{
-				// printf("now: %ld\ndying: %ld\ntime_to_die: %u\n", now, philo->diying, philo->set->time_to_die);
-				// printf("now - dying = %ld\n", now - philo->diying);
-				// philo->time = ft_itoa(now - philo->set->start_time);
 				print_message(philo, DIED);
 				return (NULL);
 			}

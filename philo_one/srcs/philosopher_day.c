@@ -28,7 +28,6 @@ void        ft_usleep(long int us, t_philo *philo)
 {
     struct timeval start;
     struct timeval now;
-	// unsigned long 	time;
     
     gettimeofday(&now, NULL);
 	start = now;
@@ -36,7 +35,6 @@ void        ft_usleep(long int us, t_philo *philo)
         + ((now.tv_usec - start.tv_usec)) < us)
     {
         gettimeofday(&now, NULL);   
-		// time = get_time();
 		if (((now.tv_usec / 1000) + now.tv_sec * 1000) - philo->diying > philo->set->time_to_die)
 		{
 			print_message(philo, DIED);
