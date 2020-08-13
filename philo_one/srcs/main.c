@@ -24,22 +24,36 @@ void	*wait_eat(void *arg)
 	return (NULL);
 }
 
+void	*thread_eat(void *arg)
+{
+	t_philo *philo;
+
+	philo = (t_philo*)arg;
+	pthread_mutex_lock(&(philo->set->lock[philo->right]));
+	pthread_mutex_lock(&(philo->set->lock[philo->left]));
+	philo->eating = 1;
+	print_message(philo, EAT);
+	return (NULL);
+}
+
 void	*start(void *arg)
 {
 	t_philo			*philo;
-	unsigned long	time;
+	unsigned long	now;
 
 	philo = (t_philo*)arg;
 	philo->diying = get_time();
 	while (1)
 	{
-		while (philo->set->fork[philo->right] == 0
-		|| philo->set->fork[philo->left] == 0)
+		pthread_create(&(philo->tid_eat), NULL, &thread_eat, philo);
+		while (philo->eating == 0)
 		{
-			time = get_time();
-			if (time - philo->diying > philo->set->time_to_die)
+			now = get_time();
+			if (now - philo->diying > philo->set->time_to_die)
 			{
-				philo->time = ft_itoa(time - philo->set->start_time);
+				printf("now: %ld\ndying: %ld\ntime_to_die: %u\n", now, philo->diying, philo->set->time_to_die);
+				printf("now - dying = %ld\n", now - philo->diying);
+				philo->time = ft_itoa(now - philo->set->start_time);
 				print_message(philo, DIED);
 				break ;
 			}

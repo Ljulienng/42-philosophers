@@ -21,7 +21,7 @@ OBJS = $(SRCS:.c=.o)
 
 NAME = philo_one
 RM = rm -f
-CC = gcc
+CC = clang
 INCLUDES = ./includes/
 CFLAGS = -Wall -Wextra -Werror  -pthread -g   -I $(INCLUDES) 
 

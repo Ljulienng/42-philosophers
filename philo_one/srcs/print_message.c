@@ -43,7 +43,6 @@ static void		*thread_print(void *arg)
 	unsigned long	nbtime;
 
 	philo = (t_philo*)arg;
-	// if (!philo->time)
 	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
 		return (NULL);
 	nbtime = ft_strlen(philo->time);
@@ -70,7 +69,8 @@ int				print_message(t_philo *philo, int str)
 		write(1, "\nCan't create thread\n", 20);
 		return (0);
 	}
-	pthread_join(philo->tid_message, NULL);
+	pthread_detach(philo->tid_message);
+	// pthread_join(philo->tid_message, NULL);
 	if (philo->set->died == 1)
 		return (0);
 	return (1);
