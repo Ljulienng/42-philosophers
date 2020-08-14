@@ -26,7 +26,6 @@ void	*thread_eat(void *arg)
 void	*start(void *arg)
 {
 	t_philo			*philo;
-	unsigned long	now;
 
 	philo = (t_philo*)arg;
 	philo->diying = get_time();
@@ -35,8 +34,7 @@ void	*start(void *arg)
 		pthread_create(&(philo->tid_eat), NULL, &thread_eat, philo);
 		while (philo->eating == 0)
 		{
-			now = get_time();
-			if (now - philo->diying > philo->set->time_to_die)
+			if (get_time() - philo->diying > philo->set->time_to_die)
 			{
 				print_message(philo, DIED);
 				return (NULL);

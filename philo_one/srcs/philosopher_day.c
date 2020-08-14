@@ -34,13 +34,13 @@ void        ft_usleep(long int us, t_philo *philo)
     while (((now.tv_sec - start.tv_sec) * 1000000)
         + ((now.tv_usec - start.tv_usec)) < us)
     {
-        gettimeofday(&now, NULL);   
 		if (((now.tv_usec / 1000) + now.tv_sec * 1000) - philo->diying > philo->set->time_to_die)
 		{
 			print_message(philo, DIED);
 			return ;
 		}
         usleep(1);
+        gettimeofday(&now, NULL);   
     }
 }
 
