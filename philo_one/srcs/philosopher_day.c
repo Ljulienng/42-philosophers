@@ -36,6 +36,8 @@ void        ft_usleep(long int us, t_philo *philo)
     {
 		if (((now.tv_usec / 1000) + now.tv_sec * 1000) - philo->diying > philo->set->time_to_die)
 		{
+			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+				return ;
 			print_message(philo, DIED);
 			return ;
 		}
