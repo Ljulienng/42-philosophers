@@ -19,16 +19,15 @@ void			thread_print_two(t_philo *philo, unsigned long nbtime)
 	write(1, philo->nb, philo->nb_len);
 	if (philo->state == EAT)
 	{
-		// printf(" has taken forks %s and %s\n%s ms: %s is eating\n", philo->nb, philo->s_left, philo->time, philo->nb);
-			write(1, " has taken forks ", 17);
-			write(1, philo->nb, philo->nb_len);
-			write(1, " and ", 5);
-			write(1, philo->s_left, philo->s_left_len);
-			write(1, "\n", 1);
-			write(1, philo->time, nbtime);
-			write(1, " ms: ", 5);
-			write(1, philo->nb, philo->nb_len);
-			write(1, " is eating\n", 11);
+		write(1, " has taken forks ", 17);
+		write(1, philo->nb, philo->nb_len);
+		write(1, " and ", 5);
+		write(1, philo->s_left, philo->s_left_len);
+		write(1, "\n", 1);
+		write(1, philo->time, nbtime);
+		write(1, " ms: ", 5);
+		write(1, philo->nb, philo->nb_len);
+		write(1, " is eating\n", 11);
 	}
 	else if (philo->state == SLEEP)
 		write(1, " is sleeping\n", 13);
@@ -53,7 +52,6 @@ static void		*thread_print(void *arg)
 			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
 				return (NULL);
 		nbtime = ft_strlen(philo->time);
-		// printf("time: %s && nbtime: %lu\n", philo->time, nbtime);
 		if (philo->state == DIED)
 			philo->set->died = 1;
 		thread_print_two(philo, nbtime);

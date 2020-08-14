@@ -36,6 +36,8 @@ void	*start(void *arg)
 		{
 			if (get_time() - philo->diying > philo->set->time_to_die)
 			{
+				if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+					return (NULL);
 				print_message(philo, DIED);
 				return (NULL);
 			}
