@@ -6,7 +6,7 @@
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:25 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/09 20:46:29 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:25:44 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,5 @@ int					philosopher_nap(t_philo *philo);
 unsigned long		get_time(void);
 int					print_message(t_philo *philo, int str);
 int					kill_program(t_philo *philo);
+int					start_thread(t_settings *set, t_philo *philo);
 #endif

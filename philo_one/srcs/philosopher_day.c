@@ -24,26 +24,27 @@ unsigned long	get_time(void)
 	return (ret);
 }
 
-void        ft_usleep(long int us, t_philo *philo)
+void			ft_usleep(long int us, t_philo *philo)
 {
-    struct timeval start;
-    struct timeval now;
-    
-    gettimeofday(&now, NULL);
+	struct timeval start;
+	struct timeval now;
+
+	gettimeofday(&now, NULL);
 	start = now;
-    while (((now.tv_sec - start.tv_sec) * 1000000)
-        + ((now.tv_usec - start.tv_usec)) < us)
-    {
-		if (((now.tv_usec / 1000) + now.tv_sec * 1000) - philo->diying > philo->set->time_to_die)
+	while (((now.tv_sec - start.tv_sec) * 1000000)
+		+ ((now.tv_usec - start.tv_usec)) < us)
+	{
+		if (((now.tv_usec / 1000) + now.tv_sec * 1000)
+		- philo->diying > philo->set->time_to_die)
 		{
 			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
 				return ;
 			print_message(philo, DIED);
 			return ;
 		}
-        usleep(1);
-        gettimeofday(&now, NULL);   
-    }
+		usleep(1);
+		gettimeofday(&now, NULL);
+	}
 }
 
 int				philosopher_nap(t_philo *philo)
@@ -65,8 +66,6 @@ int				kill_program(t_philo *philo)
 
 int				philosopher_meal(t_philo *philo)
 {
-	// if (!(print_message(philo, FORK)))
-	// 	return (kill_program(philo));
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
 	philo->diying = get_time();
@@ -74,8 +73,6 @@ int				philosopher_meal(t_philo *philo)
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
 	philo->eating = 0;
-	philo->set->fork[philo->right] = 1;
-	philo->set->fork[philo->left] = 1;
 	philo->time_must_eat += 1;
 	if (philo->set->number_of_philosopher != -1 &&
 	philo->time_must_eat ==
