@@ -6,11 +6,25 @@
 /*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:24:10 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/09 20:44:21 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:09:50 by pganglof         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
+
+void	ret_function(t_settings *set, t_philo *philo, int ret)
+{
+	int		i;
+
+	if (ret == 2)
+		write(1, "\nCan't create thread\n", 20);
+	if (set->died == 0)
+		write(1, "All philosophers finished to eat\n", 33);
+	i = 0;
+	while (i < set->number_of_philosopher)
+		free(philo[i++].nb);
+	free(philo);
+}
 
 int			start_thread(t_settings *set, t_philo *philo)
 {
@@ -21,27 +35,33 @@ int			start_thread(t_settings *set, t_philo *philo)
 	while (i < set->number_of_philosopher)
 	{
 		if (pthread_create(&(set->tid[i]), NULL, &start, &(philo[i])) != 0)
-		{
-			write(1, "\nCan't create thread\n", 20);
-			return (0);
-		}
-		i++;
+			return (2);
+		i += 1;
 	}
+	// usleep(1);
+	// i = 1;
+	// while (i < set->number_of_philosopher)
+	// {
+	// 	if (pthread_create(&(set->tid[i]), NULL, &start, &(philo[i])) != 0)
+	// 		return (2);
+	// 	i += 2;
+	// }
 	i = 0;
 	while (i < set->number_of_philosopher)
 		pthread_join(set->tid[i++], NULL);
-	if (set->died == 0)
-		write(1, "All philosophers finished to eat\n", 33);
-	i = 0;
-	while (i < set->number_of_philosopher)
-		free(philo[i++].nb);
-	free(philo);
+	// if (set->died == 0)
+	// 	write(1, "All philosophers finished to eat\n", 33);
+	// i = 0;
+	// while (i < set->number_of_philosopher)
+	// 	free(philo[i++].nb);
+	// free(philo);
 	return (1);
 }
 
 int			init_philo(t_settings *set, t_philo *philo)
 {
 	int		i;
+	int		ret;
 
 	i = 0;
 	if (!(set->tid = malloc(sizeof(pthread_t) * set->number_of_philosopher)))
@@ -53,6 +73,8 @@ int			init_philo(t_settings *set, t_philo *philo)
 		philo[i].nb_len = ft_strlen(philo[i].nb);
 		philo[i++].set = set;
 	}
+	ret = start_thread(set, philo);
+	ret_function(set, philo, ret);
 	return (1);
 }
 
