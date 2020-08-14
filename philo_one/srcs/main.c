@@ -65,6 +65,7 @@ int		start_thread(t_settings *set, t_philo *philo)
 		}
 		i += 2;
 	}
+	usleep(1);
 	i = 1;
 	while (i < set->number_of_philosopher)
 	{
