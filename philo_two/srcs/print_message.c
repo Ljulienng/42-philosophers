@@ -49,7 +49,6 @@ static void		*thread_print(void *arg)
 		sem_post(philo->set->message);
 	}
 	free(philo->time);
-	philo->time = NULL;
 	return (NULL);
 }
 
@@ -61,12 +60,13 @@ int				print_message(t_philo *philo, int str)
 		write(1, "\nMalloc error\n", 14);
 		return (0);
 	}
-	if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
-	{
-		write(1, "\nCan't create thread\n", 20);
-		return (0);
-	}
-	pthread_join(philo->tid_message, NULL);
+	thread_print(philo);
+	// if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
+	// {
+		// write(1, "\nCan't create thread\n", 20);
+		// return (0);
+	// }
+	// pthread_join(philo->tid_message, NULL);
 	if (philo->set->died == 1)
 		return (0);
 	return (1);

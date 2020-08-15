@@ -23,7 +23,7 @@ NAME = philo_two
 RM = rm -f
 CC = gcc
 INCLUDES = ./includes/
-CFLAGS = -Wall -Wextra -Werror -pthread -g3 -fsanitize=address -I $(INCLUDES) 
+CFLAGS = -Wall -Wextra -Werror -pthread -g -I $(INCLUDES) 
 
 all: $(NAME)
 

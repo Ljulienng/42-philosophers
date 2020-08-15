@@ -12,7 +12,7 @@
 
 #include "philo_two.h"
 
-void		ret_function(t_settings *set, t_philo *philo, int ret)
+void	ret_function(t_settings *set, t_philo *philo, int ret)
 {
 	int		i;
 
@@ -31,7 +31,6 @@ int			start_thread(t_settings *set, t_philo *philo)
 	int		i;
 
 	i = 0;
-	philo->set->start_time = get_time();
 	while (i < set->number_of_philosopher)
 	{
 		if (pthread_create(&(set->tid[i]), NULL, &start, &(philo[i])) != 0)

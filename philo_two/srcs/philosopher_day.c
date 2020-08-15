@@ -37,8 +37,8 @@ void			ft_usleep(long int us, t_philo *philo)
 		if (((now.tv_usec / 1000) + now.tv_sec * 1000)
 		- philo->diying > philo->set->time_to_die)
 		{
-			// if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-			// 	return ;
+			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+				return ;
 			print_message(philo, DIED);
 			return ;
 		}
@@ -46,34 +46,18 @@ void			ft_usleep(long int us, t_philo *philo)
 	}
 }
 
-void			*died(void *arg)
+int				died(t_philo *philo)
 {
-	t_philo *philo;
-
-	philo = (t_philo*)arg;
-	while (philo->eating == 0)
+	while (philo->set->ret <= 1)
 	{
 		if (get_time() - philo->diying > philo->set->time_to_die)
 		{
 			print_message(philo, DIED);
-			return (NULL);
+			return (0);
 		}
 	}
-	return (NULL);
+	return (1);
 }
-
-// int				died(t_philo *philo)
-// {
-// 	while (philo->set->ret <= 1)
-// 	{
-// 		if (get_time() - philo->diying > philo->set->time_to_die)
-// 		{
-// 			print_message(philo, DIED);
-// 			return (0);
-// 		}
-// 	}
-// 	return (1);
-// }
 
 int				good_night(t_philo *philo)
 {
@@ -90,25 +74,22 @@ void			*start(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo*)arg;
+	philo->set->start_time = get_time();
 	philo->diying = get_time();
 	while (1)
 	{
-		pthread_create(&philo->tid_died, NULL, &died, philo);
-		pthread_detach(philo->tid_died);
-		// if (!(died(philo)))
-		// 	return (NULL);
+		if (!(died(philo)))
+			return (NULL);
 		sem_wait(philo->set->lock);
 		sem_wait(philo->set->lock);
-		philo->eating = 1;
-		// philo->set->ret -= 2;
+		philo->set->ret -= 2;
 		if (!(print_message(philo, EAT)))
 			return (NULL);
 		philo->diying = get_time();
 		ft_usleep(philo->set->time_to_eat * 1000, philo);
 		sem_post(philo->set->lock);
 		sem_post(philo->set->lock);
-		philo->eating = 0;
-		// philo->set->ret += 2;
+		philo->set->ret += 2;
 		philo->time_must_eat += 1;
 		if ((philo->set->number_of_philosopher != -1 &&
 		philo->time_must_eat ==
@@ -116,4 +97,5 @@ void			*start(void *arg)
 		|| !(good_night(philo)))
 			return (NULL);
 	}
+	return (NULL);
 }
