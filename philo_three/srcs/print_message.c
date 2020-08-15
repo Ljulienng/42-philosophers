@@ -54,18 +54,10 @@ static void		*thread_print(void *arg)
 void			print_message(t_philo *philo, int str)
 {
 	philo->state = str;
-	if (philo->time == NULL)
+	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
 	{
-		if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-		{
-			write(1, "\nMalloc error\n", 14);
-			exit(0);
-		}
-	}
-	if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
-	{
-		write(1, "\nCan't create thread\n", 20);
+		write(1, "\nMalloc error\n", 14);
 		exit(0);
 	}
-	pthread_join(philo->tid_message, NULL);
+	thread_print(philo);
 }

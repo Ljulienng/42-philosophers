@@ -33,6 +33,8 @@ void			ft_usleep(long int us, t_philo *philo)
 
 	gettimeofday(&now, NULL);
 	start = now;
+	if (philo->eating)
+		philo->diying = get_time();
 	while (((now.tv_sec - start.tv_sec) * 1000000)
 		+ ((now.tv_usec - start.tv_usec)) < us)
 	{
@@ -51,7 +53,7 @@ void			*died(void *arg)
 	int		res;
 
 	philo = (t_philo*)arg;
-	while (philo->set->ret <= 1)
+	while (philo->eating == 0)
 	{
 		now = get_time();
 		res = now - philo->diying;
@@ -66,16 +68,20 @@ void			start(t_philo *philo)
 	philo->diying = get_time();
 	while (1)
 	{
-		died(philo);
+		pthread_create(&philo->tid_died, NULL, died, philo);
+		pthread_detach(philo->tid_died);
+		if (philo->set->number_of_philosopher % 2 == 1)
+			sem_wait(philo->set->sem_queue);
 		sem_wait(philo->set->lock);
 		sem_wait(philo->set->lock);
-		philo->set->ret -= 2;
+		if (philo->set->number_of_philosopher % 2 == 1)
+			sem_post(philo->set->sem_queue);
+		philo->eating = 1;
 		print_message(philo, EAT);
-		philo->diying = get_time();
 		ft_usleep(philo->set->time_to_eat * 1000, philo);
 		sem_post(philo->set->lock);
 		sem_post(philo->set->lock);
-		philo->set->ret += 2;
+		philo->eating = 0;
 		philo->time_must_eat += 1;
 		if (philo->set->number_of_philosopher != -1 &&
 		philo->time_must_eat ==

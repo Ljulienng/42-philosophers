@@ -31,6 +31,7 @@ int			start_thread(t_settings *set, t_philo *philo)
 	int		i;
 
 	i = 0;
+	set->start_time = get_time();
 	while (i < set->number_of_philosopher)
 	{
 		if (pthread_create(&(set->tid[i]), NULL, &start, &(philo[i])) != 0)
@@ -84,7 +85,7 @@ int			init_program(t_settings *set, int argc, char **argv)
 		sem_open("semaphore", O_CREAT, S_IRWXU, set->number_of_philosopher))
 		|| !(set->message = sem_open("message", O_CREAT, S_IRWXU, 1)))
 		return (1);
-	if (!(init_philo(set, philo)) || !(start_thread(set, philo)))
+	if (!(init_philo(set, philo)))
 		return (0);
 	return (1);
 }

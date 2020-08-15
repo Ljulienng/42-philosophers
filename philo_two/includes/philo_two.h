@@ -49,11 +49,13 @@ typedef struct		s_settings
 typedef struct		s_philo
 {
 	pthread_t		tid_message;
+	pthread_t		tid_died;
 	char			*nb;
 	char			*time;
 	int				state;
 	int				nb_len;
 	unsigned long	diying;
+	int				eating;
 	int				time_must_eat;
 	t_settings		*set;
 }					t_philo;

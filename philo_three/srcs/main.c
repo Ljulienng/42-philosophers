@@ -46,7 +46,7 @@ int				start_process(t_settings *set, t_philo *philo)
 	pid_t	pid;
 
 	i = 0;
-	philo->set->start_time = get_time();
+	set->start_time = get_time();
 	while (i < set->number_of_philosopher)
 	{
 		pid = fork();
@@ -83,15 +83,16 @@ int				init_philosophers(t_settings *set)
 	}
 	if (!(start_process(set, philo)))
 		return (0);
-	if (set->died == 0)
-		write(1, "All philosophers finished to eat\n", 33);
+	i = 0;
+	while (i < set->number_of_philosopher)
+		free(philo[i++].nb);
+	free(philo);
+	free(set->all_child);
 	return (1);
 }
 
 int				init_program(t_settings *set, int argc, char **argv)
 {
-	int		i;
-
 	set->number_of_philosopher = ft_atoi(argv[1]);
 	set->time_to_die = ft_atoi(argv[2]);
 	set->time_to_eat = ft_atoi(argv[3]);
@@ -102,17 +103,17 @@ int				init_program(t_settings *set, int argc, char **argv)
 		set->number_of_time_each_philosophers_must_eat = -1;
 	sem_unlink("semaphore");
 	sem_unlink("message");
+	sem_unlink("sem_queue");
 	if (!(set->lock =
 		sem_open("semaphore", O_CREAT, S_IRWXG, set->number_of_philosopher)))
 		return (0);
 	if (!(set->message = sem_open("message", O_CREAT, S_IRWXG, 1)))
 		return (0);
+	if (!(set->sem_queue = sem_open("sem_queue", O_CREAT, S_IRWXG, 1)))
+		return (0);
 	init_philosophers(set);
-	i = 0;
-	while (i < set->number_of_philosopher)
-		free(philo[i++].nb);
-	free(philo);
-	free(set->all_child);
+	if (set->died == 0)
+		write(1, "All philosophers finished to eat\n", 33);
 	return (1);
 }
 
@@ -127,5 +128,6 @@ int				main(int argc, char **argv)
 		return (1);
 	sem_close(set.lock);
 	sem_close(set.message);
+	sem_close(set.sem_queue);
 	return (0);
 }

@@ -39,6 +39,8 @@ typedef struct		s_settings
 	pid_t			*all_child;
 	sem_t			*lock;
 	sem_t			*message;
+	sem_t			*sem_queue;
+	pthread_mutex_t	queue;
 	struct timeval	tv;
 	int				died;
 	int				ret;
@@ -64,6 +66,7 @@ typedef struct		s_philo
 	int				state;
 	int				nb_len;
 	unsigned long	diying;
+	int				eating;
 	int				time_must_eat;
 	t_settings		*set;
 }					t_philo;

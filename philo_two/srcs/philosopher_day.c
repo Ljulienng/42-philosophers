@@ -37,8 +37,6 @@ void			ft_usleep(long int us, t_philo *philo)
 		if (((now.tv_usec / 1000) + now.tv_sec * 1000)
 		- philo->diying > philo->set->time_to_die)
 		{
-			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-				return ;
 			print_message(philo, DIED);
 			return ;
 		}
@@ -69,33 +67,59 @@ int				good_night(t_philo *philo)
 	return (1);
 }
 
+// void			*died2(void *arg)
+// {
+// 	t_philo *philo;
+
+// 	philo = (void*)arg;
+// 	while (philo->eating == 0)
+// 	{
+// 		if (get_time() - philo->diying > philo->set->time_to_die)
+// 		{
+// 			print_message(philo, DIED);
+// 			return (NULL);
+// 		}
+// 	}
+// 	return (NULL);
+// }
+
+void			*kill_program(t_philo *philo)
+{
+	sem_post(philo->set->lock);
+	sem_post(philo->set->lock);
+	return (NULL);
+}
+
 void			*start(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo*)arg;
-	philo->set->start_time = get_time();
 	philo->diying = get_time();
 	while (1)
 	{
+		// pthread_create(&philo->tid_died, NULL, &died2, philo);
+		// pthread_detach(philo->tid_died);
 		if (!(died(philo)))
 			return (NULL);
 		sem_wait(philo->set->lock);
 		sem_wait(philo->set->lock);
+		// philo->eating = 1;
 		philo->set->ret -= 2;
 		if (!(print_message(philo, EAT)))
-			return (NULL);
+			return (kill_program(philo));
 		philo->diying = get_time();
 		ft_usleep(philo->set->time_to_eat * 1000, philo);
 		sem_post(philo->set->lock);
 		sem_post(philo->set->lock);
+		// philo->eating = 0;
 		philo->set->ret += 2;
 		philo->time_must_eat += 1;
 		if ((philo->set->number_of_philosopher != -1 &&
 		philo->time_must_eat ==
 		philo->set->number_of_time_each_philosophers_must_eat)
 		|| !(good_night(philo)))
-			return (NULL);
+			return (kill_program(philo));
 	}
 	return (NULL);
 }
