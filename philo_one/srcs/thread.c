@@ -19,7 +19,8 @@ void	*died2(void *arg)
 	t_philo *philo;
 
 	philo = (t_philo*)arg;
-	while (philo->set->fork[philo->right] == 0)
+	while (philo->set->fork[philo->right] == 0
+	&& philo->set->fork[philo->left] == 0)
 	{
 		now = get_time();
 		res = now - philo->diying;
