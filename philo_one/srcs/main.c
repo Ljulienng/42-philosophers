@@ -68,7 +68,6 @@ int		init_program(t_settings *set, int argc, char **argv)
 		return (0);
 	if (!(set->fork = malloc(sizeof(int) * set->number_of_philosopher)))
 		return (0);
-	// memset(set->fork, 1, sizeof(int) * set->number_of_philosopher);
 	i = 0;
 	while (i < set->number_of_philosopher)
 	{

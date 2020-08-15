@@ -28,21 +28,21 @@ void			ft_usleep(long int us, t_philo *philo)
 {
 	struct timeval start;
 	struct timeval now;
+		long 		time;
+	int		res;
 
 	gettimeofday(&now, NULL);
 	start = now;
 	while (((now.tv_sec - start.tv_sec) * 1000000)
 		+ ((now.tv_usec - start.tv_usec)) < us)
 	{
-		if (((now.tv_usec / 1000) + now.tv_sec * 1000)
-		- philo->diying > philo->set->time_to_die)
+		time = get_time();
+		res = time - philo->diying;
+		if (res > philo->set->time_to_die && res > 0)
 		{
-			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-				return ;
 			print_message(philo, DIED);
 			return ;
 		}
-		// usleep(1);
 		gettimeofday(&now, NULL);
 	}
 }
@@ -76,7 +76,6 @@ int				philosopher_meal(t_philo *philo)
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
 	philo->set->fork[philo->right] = 1;
 	philo->set->fork[philo->left] = 1;
-	// philo->eating = 0;
 	philo->time_must_eat += 1;
 	if (philo->set->number_of_philosopher != -1 &&
 	philo->time_must_eat ==

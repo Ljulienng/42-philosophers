@@ -45,9 +45,8 @@ static void		*thread_print(void *arg)
 	t_philo			*philo;
 
 	philo = (t_philo*)arg;
-	if (philo->time == NULL)
-		if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-			return (NULL);
+	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+		return (NULL);
 	pthread_mutex_lock(&(philo->set->message));
 	if (philo->set->died == 1)
 		pthread_mutex_unlock(&(philo->set->message));

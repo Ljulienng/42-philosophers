@@ -14,12 +14,15 @@
 
 int		died(t_philo *philo)
 {
+	long 	now;
+	int		res;
+
 	while (philo->set->fork[philo->right] == 0 || philo->set->fork[philo->left] == 0)
 	{
-		if (get_time() - philo->diying > philo->set->time_to_die)
+		now = get_time();
+		res = now - philo->diying;
+		if (res > philo->set->time_to_die && res > 0)
 		{
-			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-				return (0);
 			print_message(philo, DIED);
 			return (0);
 		}
@@ -33,7 +36,7 @@ void	*start(void *arg)
 
 	philo = (t_philo*)arg;
 	philo->set->start_time = get_time();
-	philo->diying = get_time();
+	philo->diying = philo->set->start_time;
 	while (philo->set->died == 0)
 	{
 		if (!(died(philo)))

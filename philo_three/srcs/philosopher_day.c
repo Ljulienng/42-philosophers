@@ -51,7 +51,6 @@ void			*died(void *arg)
 	int		res;
 
 	philo = (t_philo*)arg;
-	philo->diying = get_time();
 	while (philo->set->ret <= 1)
 	{
 		now = get_time();
@@ -65,14 +64,15 @@ void			*died(void *arg)
 void			start(t_philo *philo)
 {
 	philo->set->start_time = get_time();
+	philo->diying = philo->set->start_time;
 	while (1)
 	{
 		died(philo);
 		sem_wait(philo->set->lock);
 		sem_wait(philo->set->lock);
 		philo->set->ret -= 2;
-		philo->diying = get_time();
 		print_message(philo, EAT);
+		philo->diying = get_time();
 		ft_usleep(philo->set->time_to_eat * 1000, philo);
 		sem_post(philo->set->lock);
 		sem_post(philo->set->lock);
