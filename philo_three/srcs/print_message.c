@@ -43,18 +43,25 @@ static void		*thread_print(void *arg)
 	philo = (t_philo*)arg;
 	sem_wait(philo->set->message);
 	thread_print_two(philo);
+	if (philo->state == DIED)
+		exit(1);
 	sem_post(philo->set->message);
 	free(philo->time);
+	philo->time = NULL;
 	return (NULL);
 }
 
 void			print_message(t_philo *philo, int str)
 {
 	philo->state = str;
-	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+	if (philo->time == NULL)
 	{
-		write(1, "\nMalloc error\n", 14);
-		exit(0);
+		if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+		{
+			write(1, "\nMalloc error\n", 14);
+			exit(0);
+		}
+
 	}
 	if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
 	{
@@ -62,4 +69,5 @@ void			print_message(t_philo *philo, int str)
 		exit(0);
 	}
 	pthread_join(philo->tid_message, NULL);
+	// pthread_detach(philo->tid_message);
 }

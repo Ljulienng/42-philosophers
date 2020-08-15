@@ -27,7 +27,7 @@ static int		ft_isdigit(int c)
 	return (0);
 }
 
-int				ft_atoi(const char *s)
+long			ft_atoi(const char *s)
 {
 	int		i;
 	int		sign;

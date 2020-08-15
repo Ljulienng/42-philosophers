@@ -24,7 +24,7 @@ NAME = philo_one
 RM = rm -f
 CC = clang
 INCLUDES = ./includes/
-CFLAGS = -Wall -Wextra -Werror  -pthread -g   -I $(INCLUDES) 
+CFLAGS = -Wall -Wextra -Werror  -pthread -g  -fsanitize=address -I $(INCLUDES) 
 
 all: $(NAME)
 

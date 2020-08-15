@@ -12,10 +12,10 @@
 
 #include "philo_three.h"
 
-unsigned long	get_time(void)
+long	get_time(void)
 {
 	struct timeval	tv;
-	unsigned long	ret;
+	long	ret;
 
 	gettimeofday(&tv, NULL);
 	ret = tv.tv_usec;
@@ -24,63 +24,55 @@ unsigned long	get_time(void)
 	return (ret);
 }
 
+void			ft_usleep(long int us)
+{
+	struct timeval start;
+	struct timeval now;
+
+	gettimeofday(&now, NULL);
+	start = now;
+	while (((now.tv_sec - start.tv_sec) * 1000000)
+		+ ((now.tv_usec - start.tv_usec)) < us)
+		gettimeofday(&now, NULL);
+}
+
 void			*died(void *arg)
 {
 	t_philo *philo;
+	long	now;
+	int		res;
 
 	philo = (t_philo*)arg;
-	while (philo->ret == 0)
-	{
-		if (get_time() - philo->diying > philo->set->time_to_die)
-		{
-			print_message(philo, DIED);
-			exit(1);
-		}
-	}
-	return (NULL);
-}
-
-void			*eat(void *arg)
-{
-	t_philo *philo;
-
-	philo = (t_philo*)arg;
-	philo->ret = pthread_mutex_lock(&(philo->mutex_died));
-	sem_wait(philo->set->lock);
-	sem_wait(philo->set->lock);
-	philo->ret = 1;
-	print_message(philo, EAT);
 	philo->diying = get_time();
-	usleep(philo->set->time_to_eat * 1000);
-	philo->time_must_eat += 1;
-	sem_post(philo->set->lock);
-	sem_post(philo->set->lock);
-	pthread_mutex_unlock(&(philo->mutex_died));
-	if (philo->set->number_of_philosopher != -1 &&
-	philo->time_must_eat ==
-	philo->set->number_of_time_each_philosophers_must_eat)
-		exit(0);
-	print_message(philo, SLEEP);
-	usleep(philo->set->time_to_sleep * 1000);
-	print_message(philo, THINK);
+	while (1)
+	{
+		now = get_time();
+		res = now - philo->diying;
+		if (res > philo->set->time_to_die && res > 0)
+			print_message(philo, DIED);
+	}
 	return (NULL);
 }
 
 void			start(t_philo *philo)
 {
-	if (pthread_mutex_init(&(philo->mutex_died), NULL) != 0)
-		exit(0);
-	philo->diying = get_time();
+	pthread_create(&(philo->tid_died), NULL, &died, philo);
 	while (1)
 	{
-		if (pthread_create(&(philo->tid_died), NULL, &died, philo) != 0
-			|| pthread_create(&(philo->tid_eat), NULL, &eat, philo) != 0)
-		{
-			write(2, "\nCan't create thread\n", 20);
+		sem_wait(philo->set->lock);
+		sem_wait(philo->set->lock);
+		philo->diying = get_time();
+		print_message(philo, EAT);
+		ft_usleep(philo->set->time_to_eat * 1000);
+		sem_post(philo->set->lock);
+		sem_post(philo->set->lock);
+		philo->time_must_eat += 1;
+		if (philo->set->number_of_philosopher != -1 &&
+		philo->time_must_eat ==
+		philo->set->number_of_time_each_philosophers_must_eat)
 			exit(0);
-		}
-		pthread_join(philo->tid_died, NULL);
-		pthread_join(philo->tid_eat, NULL);
+		print_message(philo, SLEEP);
+		ft_usleep(philo->set->time_to_sleep * 1000);
+		print_message(philo, THINK);
 	}
-	pthread_mutex_destroy(&(philo->mutex_died));
 }

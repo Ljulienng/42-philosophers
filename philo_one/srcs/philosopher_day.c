@@ -42,7 +42,7 @@ void			ft_usleep(long int us, t_philo *philo)
 			print_message(philo, DIED);
 			return ;
 		}
-		usleep(1);
+		// usleep(1);
 		gettimeofday(&now, NULL);
 	}
 }

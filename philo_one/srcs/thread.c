@@ -28,6 +28,7 @@ void	*start(void *arg)
 	t_philo			*philo;
 
 	philo = (t_philo*)arg;
+	philo->set->start_time = get_time();
 	philo->diying = get_time();
 	while (philo->set->died == 0)
 	{
@@ -57,7 +58,6 @@ int		start_thread(t_settings *set, t_philo *philo)
 	int		i;
 
 	i = 0;
-	set->start_time = get_time();
 	while (i < set->number_of_philosopher)
 	{
 		if (pthread_create(&(set->tid[i]), NULL, &start, &(philo[i])) != 0)

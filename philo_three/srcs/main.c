@@ -75,6 +75,7 @@ int				init_philosophers(t_settings *set)
 	while (i < set->number_of_philosopher)
 	{
 		memset(&philo[i], 0, sizeof(t_philo));
+		philo[i].i = i + 1;
 		philo[i].nb = ft_itoa(i + 1);
 		philo[i].nb_len = ft_strlen(philo[i].nb);
 		philo[i++].set = set;

@@ -12,8 +12,14 @@
 
 #include "philo_one.h"
 
-void			thread_print_two(t_philo *philo, unsigned long nbtime)
+void			thread_print_two(t_philo *philo)
 {
+	unsigned long	nbtime;
+
+	// if (!philo->time)
+	// 	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+	// 		return ;
+	nbtime = ft_strlen(philo->time);
 	write(1, philo->time, nbtime);
 	write(1, " ms: ", 5);
 	write(1, philo->nb, philo->nb_len);
@@ -40,21 +46,19 @@ void			thread_print_two(t_philo *philo, unsigned long nbtime)
 static void		*thread_print(void *arg)
 {
 	t_philo			*philo;
-	unsigned long	nbtime;
 
 	philo = (t_philo*)arg;
+	if (philo->time == NULL)
+		if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+			return (NULL);
 	pthread_mutex_lock(&(philo->set->message));
 	if (philo->set->died == 1)
 		pthread_mutex_unlock(&(philo->set->message));
 	else
 	{
-		if (!philo->time)
-			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-				return (NULL);
-		nbtime = ft_strlen(philo->time);
 		if (philo->state == DIED)
 			philo->set->died = 1;
-		thread_print_two(philo, nbtime);
+		thread_print_two(philo);
 		pthread_mutex_unlock(&(philo->set->message));
 	}
 	free(philo->time);

@@ -43,7 +43,7 @@ typedef struct		s_settings
 	int				died;
 	unsigned long	start_time;
 	int				number_of_philosopher;
-	unsigned int	time_to_die;
+	 long	time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_time_each_philosophers_must_eat;
@@ -67,10 +67,10 @@ typedef struct		s_philo
 	t_settings		*set;
 }					t_philo;
 
-int					ft_atoi(const char *s);
+long				ft_atoi(const char *s);
 int					ft_strlen(const char *str);
 char				*ft_itoa(long n);
-unsigned long		get_time(void);
+long				get_time(void);
 void				print_message(t_philo *philo, int str);
 void				*eat(void *arg);
 void				*died(void *arg);
