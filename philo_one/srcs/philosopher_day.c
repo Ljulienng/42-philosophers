@@ -66,13 +66,9 @@ int				kill_program(t_philo *philo)
 
 int				philosopher_meal(t_philo *philo)
 {
-	philo->set->fork[philo->right] =
-	pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	philo->set->fork[philo->left] =
-	pthread_mutex_lock(&(philo->set->lock[philo->left]));
+	philo->diying = get_time();
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
-	philo->diying = get_time();
 	ft_usleep(philo->set->time_to_eat * 1000, philo);
 	pthread_mutex_unlock(&(philo->set->lock[philo->right]));
 	pthread_mutex_unlock(&(philo->set->lock[philo->left]));
