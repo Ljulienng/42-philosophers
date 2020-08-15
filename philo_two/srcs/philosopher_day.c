@@ -74,7 +74,6 @@ void			*start(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo*)arg;
-	philo->set->start_time = get_time();
 	philo->diying = get_time();
 	while (1)
 	{
@@ -97,5 +96,4 @@ void			*start(void *arg)
 		|| !(good_night(philo)))
 			return (NULL);
 	}
-	return (NULL);
 }

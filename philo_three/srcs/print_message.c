@@ -61,7 +61,6 @@ void			print_message(t_philo *philo, int str)
 			write(1, "\nMalloc error\n", 14);
 			exit(0);
 		}
-
 	}
 	if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
 	{
@@ -69,5 +68,4 @@ void			print_message(t_philo *philo, int str)
 		exit(0);
 	}
 	pthread_join(philo->tid_message, NULL);
-	// pthread_detach(philo->tid_message);
 }

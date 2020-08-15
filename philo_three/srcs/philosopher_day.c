@@ -12,10 +12,10 @@
 
 #include "philo_three.h"
 
-long	get_time(void)
+long			get_time(void)
 {
 	struct timeval	tv;
-	long	ret;
+	long			ret;
 
 	gettimeofday(&tv, NULL);
 	ret = tv.tv_usec;
@@ -26,7 +26,7 @@ long	get_time(void)
 
 void			ft_usleep(long int us, t_philo *philo)
 {
-	struct timeval 	start;
+	struct timeval	start;
 	struct timeval	now;
 	long			time;
 	int				res;
@@ -37,7 +37,7 @@ void			ft_usleep(long int us, t_philo *philo)
 		+ ((now.tv_usec - start.tv_usec)) < us)
 	{
 		time = get_time();
-	 	res = time - philo->diying;
+		res = time - philo->diying;
 		if (res > philo->set->time_to_die && res > 0)
 			print_message(philo, DIED);
 		gettimeofday(&now, NULL);
@@ -54,7 +54,7 @@ void			*died(void *arg)
 	while (philo->set->ret <= 1)
 	{
 		now = get_time();
-	 	res = now - philo->diying;
+		res = now - philo->diying;
 		if (res > philo->set->time_to_die && res > 0)
 			print_message(philo, DIED);
 	}
@@ -63,8 +63,7 @@ void			*died(void *arg)
 
 void			start(t_philo *philo)
 {
-	philo->set->start_time = get_time();
-	philo->diying = philo->set->start_time;
+	philo->diying = get_time();
 	while (1)
 	{
 		died(philo);

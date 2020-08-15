@@ -26,10 +26,10 @@ unsigned long	get_time(void)
 
 void			ft_usleep(long int us, t_philo *philo)
 {
-	struct timeval start;
-	struct timeval now;
-		long 		time;
-	int		res;
+	struct timeval	start;
+	struct timeval	now;
+	long			time;
+	int				res;
 
 	gettimeofday(&now, NULL);
 	start = now;
@@ -66,8 +66,10 @@ int				kill_program(t_philo *philo)
 
 int				philosopher_meal(t_philo *philo)
 {
-	philo->set->fork[philo->right] = pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	philo->set->fork[philo->left] = pthread_mutex_lock(&(philo->set->lock[philo->left]));
+	philo->set->fork[philo->right] =
+	pthread_mutex_lock(&(philo->set->lock[philo->right]));
+	philo->set->fork[philo->left] =
+	pthread_mutex_lock(&(philo->set->lock[philo->left]));
 	if (!(print_message(philo, EAT)))
 		return (kill_program(philo));
 	philo->diying = get_time();
