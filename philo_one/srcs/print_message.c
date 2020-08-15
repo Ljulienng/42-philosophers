@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_message.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 18:30:29 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/02 18:41:47 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/15 20:12:10 by pauline          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@ void			thread_print_two(t_philo *philo)
 {
 	unsigned long	nbtime;
 
-	// if (!philo->time)
-	// 	if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
-	// 		return ;
 	nbtime = ft_strlen(philo->time);
 	write(1, philo->time, nbtime);
 	write(1, " ms: ", 5);
@@ -69,12 +66,7 @@ static void		*thread_print(void *arg)
 int				print_message(t_philo *philo, int str)
 {
 	philo->state = str;
-	if (pthread_create(&(philo->tid_message), NULL, &thread_print, philo) != 0)
-	{
-		write(1, "\nCan't create thread\n", 20);
-		return (0);
-	}
-	pthread_detach(philo->tid_message);
+	thread_print(philo);
 	if (philo->set->died == 1)
 		return (0);
 	return (1);

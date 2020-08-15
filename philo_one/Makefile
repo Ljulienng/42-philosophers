@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+         #
+#    By: pauline <pauline@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/02 16:21:17 by pganglof          #+#    #+#              #
-#    Updated: 2020/08/14 14:26:09 by pganglof         ###   ########.fr        #
+#    Updated: 2020/08/15 20:01:37 by pauline          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME = philo_one
 RM = rm -f
 CC = clang
 INCLUDES = ./includes/
-CFLAGS = -Wall -Wextra -Werror  -pthread -g  -fsanitize=address -I $(INCLUDES) 
+CFLAGS = -Wall -Wextra -Werror  -pthread -g3  -fsanitize=address -I $(INCLUDES) 
 
 all: $(NAME)
 

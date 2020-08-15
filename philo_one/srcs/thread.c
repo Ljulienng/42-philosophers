@@ -3,24 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 14:25:16 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/14 16:19:00 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/15 20:07:33 by pauline          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	*thread_eat(void *arg)
+int		died(t_philo *philo)
 {
-	t_philo *philo;
-
-	philo = (t_philo*)arg;
-	pthread_mutex_lock(&(philo->set->lock[philo->right]));
-	pthread_mutex_lock(&(philo->set->lock[philo->left]));
-	philo->eating = 1;
-	return (NULL);
+	while (philo->set->fork[philo->right] == 0 || philo->set->fork[philo->left] == 0)
+	{
+		if (get_time() - philo->diying > philo->set->time_to_die)
+		{
+			if (!(philo->time = ft_itoa(get_time() - philo->set->start_time)))
+				return (0);
+			print_message(philo, DIED);
+			return (0);
+		}
+	}
+	return (1);
 }
 
 void	*start(void *arg)
@@ -32,23 +36,12 @@ void	*start(void *arg)
 	philo->diying = get_time();
 	while (philo->set->died == 0)
 	{
-		pthread_create(&(philo->tid_eat), NULL, &thread_eat, philo);
-		pthread_detach(philo->tid_eat);
-		while (philo->eating == 0)
-		{
-			if (get_time() - philo->diying > philo->set->time_to_die)
-			{
-				if (!(philo->time = ft_itoa(get_time()
-				- philo->set->start_time)))
-					return (NULL);
-				print_message(philo, DIED);
-				return (NULL);
-			}
-		}
+		if (!(died(philo)))
+			return (NULL);
 		if (!(philosopher_meal(philo)))
-			break ;
+			return (NULL);
 		if (!(philosopher_nap(philo)))
-			break ;
+			return (NULL);
 	}
 	return (NULL);
 }

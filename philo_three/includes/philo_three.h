@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:25 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/09 20:06:51 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/15 19:42:43 by pauline          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ typedef struct		s_settings
 	sem_t			*message;
 	struct timeval	tv;
 	int				died;
+	int				ret;
 	unsigned long	start_time;
 	int				number_of_philosopher;
-	 long	time_to_die;
+	long			time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_time_each_philosophers_must_eat;

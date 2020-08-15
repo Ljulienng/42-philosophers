@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:15 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/14 14:25:20 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/15 19:57:48 by pauline          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,14 @@ int		init_program(t_settings *set, int argc, char **argv)
 		return (0);
 	if (!(set->fork = malloc(sizeof(int) * set->number_of_philosopher)))
 		return (0);
-	memset(set->fork, 1, sizeof(int) * set->number_of_philosopher);
+	// memset(set->fork, 1, sizeof(int) * set->number_of_philosopher);
 	i = 0;
 	while (i < set->number_of_philosopher)
+	{
+		set->fork[i] = 1;
 		if (pthread_mutex_init(&(set->lock[i++]), NULL) != 0)
 			return (0);
+	}
 	if (pthread_mutex_init(&set->message, NULL) != 0)
 		return (0);
 	set->time_to_die = ft_atoi(argv[2]);

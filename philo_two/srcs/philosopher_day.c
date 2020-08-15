@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher_day.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:43:26 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/14 16:16:17 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/15 19:52:29 by pauline          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void			ft_usleep(long int us, t_philo *philo)
 			print_message(philo, DIED);
 			return ;
 		}
-		// usleep(1);
 		gettimeofday(&now, NULL);
 	}
 }
@@ -77,7 +76,6 @@ void			*start(void *arg)
 	philo = (t_philo*)arg;
 	philo->set->start_time = get_time();
 	philo->diying = get_time();
-	// pthread_create(&(philo->tid_died), NULL, &died, philo);
 	while (1)
 	{
 		if (!(died(philo)))

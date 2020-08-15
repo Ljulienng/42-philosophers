@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:02:41 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/09 20:07:19 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/15 19:44:36 by pauline          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int				start_process(t_settings *set, t_philo *philo)
 	pid_t	pid;
 
 	i = 0;
-	set->start_time = get_time();
 	while (i < set->number_of_philosopher)
 	{
 		pid = fork();
@@ -72,6 +71,7 @@ int				init_philosophers(t_settings *set)
 		return (0);
 	if (!(set->all_child = malloc(sizeof(pid_t) * set->number_of_philosopher)))
 		return (0);
+	set->ret = set->number_of_philosopher;	
 	while (i < set->number_of_philosopher)
 	{
 		memset(&philo[i], 0, sizeof(t_philo));
