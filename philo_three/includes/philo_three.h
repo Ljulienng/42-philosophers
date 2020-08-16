@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:25 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/15 19:42:43 by pauline          ###   ########.fr       */
+/*   Updated: 2020/08/16 12:52:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct		s_settings
 	long			time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_of_time_each_philosophers_must_eat;
+	int				philosophers_must_eat;
 	int				number_of_philosophers_finished_to_eat;
 }					t_settings;
 

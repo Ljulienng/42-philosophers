@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher_day.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:03:22 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/15 19:51:33 by pauline          ###   ########.fr       */
+/*   Updated: 2020/08/16 12:51:59 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ void			start(t_philo *philo)
 		philo->eating = 0;
 		philo->time_must_eat += 1;
 		if (philo->set->number_of_philosopher != -1 &&
-		philo->time_must_eat ==
-		philo->set->number_of_time_each_philosophers_must_eat)
+		philo->time_must_eat == philo->set->philosophers_must_eat)
 			exit(0);
 		print_message(philo, SLEEP);
 		ft_usleep(philo->set->time_to_sleep * 1000, philo);

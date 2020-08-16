@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauline <pauline@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:02:41 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/15 19:44:36 by pauline          ###   ########.fr       */
+/*   Updated: 2020/08/16 12:52:14 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ int				init_program(t_settings *set, int argc, char **argv)
 	set->time_to_eat = ft_atoi(argv[3]);
 	set->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		set->number_of_time_each_philosophers_must_eat = ft_atoi(argv[5]);
+		set->philosophers_must_eat = ft_atoi(argv[5]);
 	else
-		set->number_of_time_each_philosophers_must_eat = -1;
+		set->philosophers_must_eat = -1;
 	sem_unlink("semaphore");
 	sem_unlink("message");
 	sem_unlink("sem_queue");
