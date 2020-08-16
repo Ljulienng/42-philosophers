@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 20:24:10 by pganglof          #+#    #+#             */
-/*   Updated: 2020/08/14 16:11:13 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/16 02:33:34 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-void	ret_function(t_settings *set, t_philo *philo, int ret)
+void		ret_function(t_settings *set, t_philo *philo, int ret)
 {
 	int		i;
 
@@ -81,9 +81,11 @@ int			init_program(t_settings *set, int argc, char **argv)
 		return (0);
 	sem_unlink("semaphore");
 	sem_unlink("message");
+	sem_unlink("sem_queue");
 	if (!(set->lock =
 		sem_open("semaphore", O_CREAT, S_IRWXU, set->number_of_philosopher))
-		|| !(set->message = sem_open("message", O_CREAT, S_IRWXU, 1)))
+		|| !(set->message = sem_open("message", O_CREAT, S_IRWXU, 1))
+		|| !(set->sem_queue = sem_open("sem_queue", O_CREAT, S_IRWXU, 1)))
 		return (1);
 	if (!(init_philo(set, philo)))
 		return (0);
@@ -102,5 +104,6 @@ int			main(int argc, char **argv)
 	free(set.tid);
 	sem_close(set.lock);
 	sem_close(set.message);
+	sem_close(set.sem_queue);
 	return (0);
 }

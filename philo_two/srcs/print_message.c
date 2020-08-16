@@ -49,6 +49,7 @@ static void		*thread_print(void *arg)
 		sem_post(philo->set->message);
 	}
 	free(philo->time);
+	philo->time = NULL;
 	return (NULL);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pganglof <pganglof@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 16:14:25 by pganglof          #+#    #+#             */
-/*   Updated: 2020/07/09 20:45:40 by pganglof         ###   ########.fr       */
+/*   Updated: 2020/08/16 02:35:11 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ typedef struct		s_settings
 	pthread_t		*tid;
 	sem_t			*lock;
 	sem_t			*message;
+	sem_t			*sem_queue;
 	int				ret;
 	struct timeval	tv;
 	int				died;
 	unsigned long	start_time;
 	int				number_of_philosopher;
-	unsigned int	time_to_die;
+	long			time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_time_each_philosophers_must_eat;
@@ -54,7 +55,7 @@ typedef struct		s_philo
 	char			*time;
 	int				state;
 	int				nb_len;
-	unsigned long	diying;
+	long			diying;
 	int				eating;
 	int				time_must_eat;
 	t_settings		*set;
@@ -66,5 +67,7 @@ char				*ft_itoa(long n);
 unsigned long		get_time(void);
 int					print_message(t_philo *philo, int str);
 void				*start(void *arg);
+void				ft_usleep(long int us, t_philo *philo);
+void				*kill_program(t_philo *philo);
 
 #endif
